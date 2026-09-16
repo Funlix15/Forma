@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5b5cf0">
 <title>Forma — Tu réponds. Forma crée.</title>
 
 <style>
@@ -24,11 +25,16 @@
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
   font-family:Inter,Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
+  -webkit-font-smoothing:antialiased;
 }
 
 button,
@@ -40,6 +46,7 @@ select{
 
 button{
   cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 
 button:disabled{
@@ -55,8 +62,9 @@ header{
   position:sticky;
   top:0;
   z-index:50;
-  background:rgba(255,255,255,.94);
+  background:rgba(255,255,255,.96);
   backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
   border-bottom:1px solid var(--border);
 }
 
@@ -69,6 +77,7 @@ header{
   justify-content:space-between;
   padding:0 20px;
   gap:20px;
+  position:relative;
 }
 
 .logo{
@@ -80,6 +89,8 @@ header{
   font-size:22px;
   font-weight:800;
   color:var(--text);
+  min-height:48px;
+  padding:5px 0;
 }
 
 .logo-mark{
@@ -102,6 +113,7 @@ header{
   border:0;
   background:transparent;
   padding:10px 13px;
+  min-height:44px;
   border-radius:10px;
   color:#555b70;
 }
@@ -112,14 +124,42 @@ header{
   color:var(--primary);
 }
 
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
 .coin-pill{
   border:1px solid #dddfff;
   background:#f4f4ff;
   color:var(--primary);
-  padding:9px 13px;
+  padding:9px 14px;
+  min-height:44px;
   border-radius:999px;
   font-weight:700;
   white-space:nowrap;
+}
+
+.coin-pill:hover{
+  background:#e9eaff;
+}
+
+.mobile-menu-button{
+  display:none;
+  width:46px;
+  height:46px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:12px;
+  font-size:23px;
+  align-items:center;
+  justify-content:center;
+  color:var(--text);
+}
+
+.mobile-menu{
+  display:none;
 }
 
 main{
@@ -196,9 +236,14 @@ h3{
   color:white;
   background:linear-gradient(135deg,var(--primary),var(--primary2));
   padding:14px 21px;
+  min-height:46px;
   border-radius:12px;
   font-weight:800;
   box-shadow:0 8px 25px rgba(91,92,240,.22);
+}
+
+.primary:hover{
+  transform:translateY(-1px);
 }
 
 .secondary{
@@ -206,8 +251,13 @@ h3{
   color:var(--text);
   background:white;
   padding:13px 20px;
+  min-height:46px;
   border-radius:12px;
   font-weight:700;
+}
+
+.secondary:hover{
+  background:#f8f8fc;
 }
 
 .actions{
@@ -331,9 +381,11 @@ h3{
   border:1px solid var(--border);
   border-radius:13px;
   padding:14px;
+  min-height:48px;
   outline:none;
   background:#fff;
   resize:vertical;
+  font-size:16px;
 }
 
 .field:focus{
@@ -354,6 +406,7 @@ textarea.field{
   width:100%;
   text-align:left;
   padding:16px;
+  min-height:52px;
   border:1px solid var(--border);
   background:white;
   border-radius:13px;
@@ -417,6 +470,7 @@ textarea.field{
 .result-content{
   line-height:1.7;
   white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
 .contact{
@@ -473,6 +527,8 @@ textarea.field{
   background:white;
   max-width:520px;
   width:100%;
+  max-height:90vh;
+  overflow:auto;
   border-radius:22px;
   padding:28px;
   box-shadow:0 25px 80px rgba(0,0,0,.2);
@@ -519,6 +575,7 @@ textarea.field{
   background:#f0f1ff;
   color:#5054b8;
   margin:15px 0;
+  line-height:1.5;
 }
 
 .error{
@@ -527,6 +584,7 @@ textarea.field{
   background:#fff0f0;
   color:var(--danger);
   margin-top:15px;
+  line-height:1.5;
 }
 
 .success{
@@ -559,17 +617,135 @@ textarea.field{
   margin:12px 0;
 }
 
-@media(max-width:850px){
-  .hero{
-    grid-template-columns:1fr;
-  }
+.mobile-quick-actions{
+  display:none;
+}
 
-  .grid{
-    grid-template-columns:1fr 1fr;
+@media(max-width:850px){
+
+  .nav{
+    min-height:66px;
+    padding:0 14px;
   }
 
   .nav-links{
     display:none;
+  }
+
+  .mobile-menu-button{
+    display:flex;
+  }
+
+  .mobile-menu{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    display:grid;
+    gap:7px;
+    padding:12px 14px 16px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    box-shadow:0 16px 35px rgba(20,25,60,.12);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-8px);
+    pointer-events:none;
+    transition:.18s ease;
+  }
+
+  .mobile-menu.open{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .mobile-menu-title{
+    padding:4px 6px 7px;
+    color:var(--muted);
+    font-size:13px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+
+  .mobile-menu button{
+    width:100%;
+    min-height:52px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    text-align:left;
+    font-weight:750;
+    color:var(--text);
+  }
+
+  .mobile-menu button:hover,
+  .mobile-menu button:active{
+    background:#f5f5ff;
+    border-color:#d9daff;
+    color:var(--primary);
+  }
+
+  .mobile-menu button span:first-child{
+    width:28px;
+    text-align:center;
+    font-size:20px;
+  }
+
+  main{
+    padding:25px 16px 60px;
+  }
+
+  .hero{
+    min-height:auto;
+    grid-template-columns:1fr;
+    gap:28px;
+    padding:20px 0 45px;
+  }
+
+  .hero:before{
+    width:300px;
+    height:300px;
+    filter:blur(80px);
+    left:-100px;
+    top:-40px;
+  }
+
+  .hero p{
+    font-size:17px;
+  }
+
+  .mobile-quick-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin:-20px 0 42px;
+  }
+
+  .mobile-quick-actions button{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:14px;
+    min-height:62px;
+    padding:9px 6px;
+    font-size:13px;
+    font-weight:750;
+    color:var(--text);
+  }
+
+  .mobile-quick-actions button:hover{
+    border-color:#d9daff;
+    background:#f7f7ff;
+  }
+
+  .grid{
+    grid-template-columns:1fr 1fr;
   }
 
   .account-box{
@@ -578,28 +754,201 @@ textarea.field{
 }
 
 @media(max-width:600px){
+
+  .logo{
+    font-size:20px;
+  }
+
+  .logo-mark{
+    width:32px;
+    height:32px;
+  }
+
+  .coin-pill{
+    min-height:44px;
+    padding:8px 12px;
+    font-size:14px;
+  }
+
+  .mobile-menu-button{
+    width:44px;
+    height:44px;
+  }
+
   main{
-    padding:25px 14px 60px;
+    padding:20px 13px 50px;
+  }
+
+  h1{
+    font-size:clamp(39px,13vw,56px);
+    letter-spacing:-2px;
+  }
+
+  h2{
+    font-size:28px;
+    letter-spacing:-.7px;
+  }
+
+  .hero{
+    padding-top:10px;
+    gap:22px;
+  }
+
+  .hero p{
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  .actions{
+    width:100%;
+    gap:9px;
+  }
+
+  .actions > button{
+    width:100%;
+  }
+
+  .mobile-quick-actions{
+    margin-top:-10px;
+    margin-bottom:35px;
+  }
+
+  .mobile-quick-actions button{
+    min-height:66px;
+    font-size:12px;
+  }
+
+  .preview{
+    border-radius:20px;
+    padding:19px;
   }
 
   .grid{
     grid-template-columns:1fr;
+    gap:13px;
   }
 
-  h1{
-    letter-spacing:-2px;
+  .card{
+    border-radius:16px;
+    padding:19px;
   }
 
   .form-card{
-    padding:20px;
+    margin:18px 0;
+    padding:19px 16px;
+    border-radius:18px;
+  }
+
+  .question-title{
+    font-size:23px;
+    line-height:1.25;
+  }
+
+  .question-help{
+    font-size:14px;
+  }
+
+  .field{
+    padding:14px;
+    min-height:50px;
+  }
+
+  textarea.field{
+    min-height:145px;
+  }
+
+  .choice-btn{
+    min-height:55px;
+    padding:15px;
+  }
+
+  .result{
+    margin:18px 0;
   }
 
   .result-paper{
-    padding:22px;
+    padding:21px 17px;
+    border-radius:18px;
+  }
+
+  .result-paper h1{
+    font-size:29px;
+    line-height:1.1;
+  }
+
+  .result-content{
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .result-paper ul{
+    padding-left:21px;
   }
 
   .schedule-row{
     grid-template-columns:1fr;
+  }
+
+  .modal-bg{
+    padding:12px;
+  }
+
+  .modal{
+    border-radius:18px;
+    padding:21px 17px;
+    max-height:92vh;
+  }
+
+  .cookie{
+    left:10px;
+    right:10px;
+    bottom:10px;
+    padding:17px;
+    border-radius:16px;
+  }
+
+  .cookie .actions{
+    margin-top:14px;
+  }
+
+  .account-box{
+    gap:12px;
+    margin:18px 0;
+  }
+
+  .stat{
+    padding:18px;
+  }
+
+  .stat strong{
+    font-size:27px;
+  }
+
+  .shop-card .primary,
+  .plan-card .primary,
+  .plan-card .secondary{
+    margin-top:12px;
+  }
+}
+
+@media(max-width:360px){
+
+  .nav{
+    padding:0 10px;
+  }
+
+  .coin-pill{
+    padding:7px 9px;
+    font-size:13px;
+  }
+
+  .mobile-quick-actions{
+    gap:6px;
+  }
+
+  .mobile-quick-actions button{
+    font-size:11px;
+    padding:7px 3px;
   }
 }
 </style>
@@ -610,26 +959,138 @@ textarea.field{
 <header>
   <div class="nav">
 
-    <button class="logo" onclick="showPage('home')">
+    <button
+      class="logo"
+      type="button"
+      onclick="showPage('home')"
+      aria-label="Accueil Forma"
+    >
       <span class="logo-mark">F</span>
       <span>Forma</span>
     </button>
 
-    <nav class="nav-links">
-      <button data-page="home" onclick="showPage('home')">Accueil</button>
-      <button data-page="tools" onclick="showPage('tools')">Outils</button>
-      <button data-page="shop" onclick="showPage('shop')">Boutique</button>
-      <button data-page="plans" onclick="showPage('plans')">Abonnement</button>
-      <button data-page="account" onclick="showPage('account')">Mon compte</button>
+    <nav class="nav-links" aria-label="Navigation principale">
+
+      <button
+        data-page="home"
+        type="button"
+        onclick="showPage('home')"
+      >
+        Accueil
+      </button>
+
+      <button
+        data-page="tools"
+        type="button"
+        onclick="showPage('tools')"
+      >
+        Outils
+      </button>
+
+      <button
+        data-page="shop"
+        type="button"
+        onclick="showPage('shop')"
+      >
+        Boutique
+      </button>
+
+      <button
+        data-page="plans"
+        type="button"
+        onclick="showPage('plans')"
+      >
+        Abonnement
+      </button>
+
+      <button
+        data-page="account"
+        type="button"
+        onclick="showPage('account')"
+      >
+        Mon compte
+      </button>
+
     </nav>
 
-    <div class="coin-pill">
-      🪙 <span id="coinBalance">1</span>
+    <div class="nav-actions">
+
+      <button
+        class="coin-pill"
+        type="button"
+        onclick="showPage('shop')"
+        aria-label="Acheter des Coins"
+      >
+        🪙 <span id="coinBalance">1</span>
+      </button>
+
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        onclick="toggleMobileMenu()"
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
     </div>
 
   </div>
-</header>
 
+  <div
+    id="mobileMenu"
+    class="mobile-menu"
+    aria-label="Menu mobile"
+  >
+
+    <div class="mobile-menu-title">
+      Menu
+    </div>
+
+    <button
+      type="button"
+      onclick="mobileNavigate('home')"
+    >
+      <span>🏠</span>
+      <span>Accueil</span>
+    </button>
+
+    <button
+      type="button"
+      onclick="mobileNavigate('tools')"
+    >
+      <span>🛠️</span>
+      <span>Outils</span>
+    </button>
+
+    <button
+      type="button"
+      onclick="mobileNavigate('shop')"
+    >
+      <span>🪙</span>
+      <span>Acheter des Coins</span>
+    </button>
+
+    <button
+      type="button"
+      onclick="mobileNavigate('plans')"
+    >
+      <span>⭐</span>
+      <span>Abonnement</span>
+    </button>
+
+    <button
+      type="button"
+      onclick="mobileNavigate('account')"
+    >
+      <span>👤</span>
+      <span>Mon compte</span>
+    </button>
+
+  </div>
+</header>
 
 <main>
 
@@ -639,7 +1100,9 @@ textarea.field{
 
     <div>
 
-      <span class="badge">IA rédactionnelle</span>
+      <span class="badge">
+        IA rédactionnelle
+      </span>
 
       <h1>
         Tu réponds.<br>
@@ -656,6 +1119,7 @@ textarea.field{
 
         <button
           class="primary"
+          type="button"
           onclick="showPage('tools')"
         >
           Commencer
@@ -663,6 +1127,7 @@ textarea.field{
 
         <button
           class="secondary"
+          type="button"
           onclick="showPage('plans')"
         >
           Découvrir Forma
@@ -690,28 +1155,61 @@ textarea.field{
 
   </div>
 
-  <h2>Pourquoi Forma ?</h2>
+  <div class="mobile-quick-actions">
+
+    <button
+      type="button"
+      onclick="showPage('shop')"
+    >
+      🪙<br>
+      Coins
+    </button>
+
+    <button
+      type="button"
+      onclick="showPage('plans')"
+    >
+      ⭐<br>
+      Abonnement
+    </button>
+
+    <button
+      type="button"
+      onclick="showPage('account')"
+    >
+      👤<br>
+      Compte
+    </button>
+
+  </div>
+
+  <h2>
+    Pourquoi Forma ?
+  </h2>
 
   <div class="grid">
 
     <div class="card">
       <h3>Simple</h3>
       <p>
-        Une question à la fois pour rendre la création rapide et facile.
+        Une question à la fois pour rendre
+        la création rapide et facile.
       </p>
     </div>
 
     <div class="card">
       <h3>Intelligent</h3>
       <p>
-        L'IA comprend tes réponses et ne se contente pas de corriger les fautes.
+        L'IA comprend tes réponses et ne se
+        contente pas de corriger les fautes.
       </p>
     </div>
 
     <div class="card">
       <h3>Directement utilisable</h3>
       <p>
-        Le résultat est reformulé et organisé pour pouvoir être utilisé immédiatement.
+        Le résultat est reformulé et organisé
+        pour pouvoir être utilisé immédiatement.
       </p>
     </div>
 
@@ -719,10 +1217,11 @@ textarea.field{
 
 </section>
 
-
 <section id="page-tools" class="page">
 
-  <h2>Les outils Forma</h2>
+  <h2>
+    Les outils Forma
+  </h2>
 
   <p class="muted">
     Choisis ce que tu veux créer.
@@ -732,34 +1231,36 @@ textarea.field{
 
 </section>
 
-
 <section id="page-generator" class="page">
 
   <div id="generatorContainer"></div>
 
 </section>
 
-
 <section id="page-shop" class="page">
 
-  <h2>Boutique</h2>
+  <h2>
+    Boutique
+  </h2>
 
   <p class="muted">
     Achète des Coins pour utiliser les générateurs.
   </p>
 
   <div class="notice">
-    Paiement sécurisé par Stripe. Après le paiement, tes Coins sont ajoutés automatiquement à ton compte.
+    Paiement sécurisé par Stripe.
+    Après le paiement, tes Coins sont ajoutés automatiquement à ton compte.
   </div>
 
   <div id="shopGrid" class="grid"></div>
 
 </section>
 
-
 <section id="page-plans" class="page">
 
-  <h2>Abonnement</h2>
+  <h2>
+    Abonnement
+  </h2>
 
   <p class="muted">
     Choisis le fonctionnement qui te convient.
@@ -769,33 +1270,48 @@ textarea.field{
 
 </section>
 
-
 <section id="page-account" class="page">
 
-  <h2>Mon compte</h2>
+  <h2>
+    Mon compte
+  </h2>
 
   <div class="account-box">
 
     <div class="stat">
-      <span class="muted">Coins disponibles</span>
-      <strong id="accountCoins">1</strong>
+      <span class="muted">
+        Coins disponibles
+      </span>
+      <strong id="accountCoins">
+        1
+      </strong>
     </div>
 
     <div class="stat">
-      <span class="muted">Coins quotidiens</span>
-      <strong id="accountDaily">1</strong>
+      <span class="muted">
+        Coins quotidiens
+      </span>
+      <strong id="accountDaily">
+        1
+      </strong>
     </div>
 
     <div class="stat">
-      <span class="muted">Coins achetés</span>
-      <strong id="accountPurchased">0</strong>
+      <span class="muted">
+        Coins achetés
+      </span>
+      <strong id="accountPurchased">
+        0
+      </strong>
     </div>
 
   </div>
 
   <div class="card">
 
-    <h3>Abonnement</h3>
+    <h3>
+      Abonnement
+    </h3>
 
     <p id="accountPlan">
       Gratuit
@@ -812,7 +1328,9 @@ textarea.field{
 
   <div class="card">
 
-    <h3>Historique</h3>
+    <h3>
+      Historique
+    </h3>
 
     <div id="accountHistory"></div>
 
@@ -820,46 +1338,60 @@ textarea.field{
 
 </section>
 
-
 <section id="page-privacy" class="page">
 
-  <h2>Politique de confidentialité</h2>
+  <h2>
+    Politique de confidentialité
+  </h2>
 
   <div class="card">
 
-    <h3>Données utilisées</h3>
+    <h3>
+      Données utilisées
+    </h3>
 
     <p>
-      Forma utilise les informations que tu renseignes dans les questionnaires
-      afin de générer le résultat demandé.
+      Forma utilise les informations que tu renseignes
+      dans les questionnaires afin de générer le résultat demandé.
     </p>
 
-    <h3>Génération IA</h3>
+    <h3>
+      Génération IA
+    </h3>
 
     <p>
-      Lors d'une génération, les réponses sont envoyées au serveur Forma
-      afin d'utiliser le service d'intelligence artificielle configuré sur celui-ci.
+      Lors d'une génération, les réponses sont envoyées
+      au serveur Forma afin d'utiliser le service
+      d'intelligence artificielle configuré sur celui-ci.
     </p>
 
-    <h3>Compte</h3>
+    <h3>
+      Compte
+    </h3>
 
     <p>
       Dans cette version, les informations du compte,
-      les Coins, les préférences et l'historique sont conservés localement
-      dans le navigateur.
+      les Coins, les préférences et l'historique sont
+      conservés localement dans le navigateur.
     </p>
 
-    <h3>Historique des générations</h3>
+    <h3>
+      Historique des générations
+    </h3>
 
     <p>
-      Forma ne conserve pas d'historique des générations dans cette version.
+      Forma ne conserve pas d'historique des générations
+      dans cette version.
     </p>
 
-    <h3>Suppression</h3>
+    <h3>
+      Suppression
+    </h3>
 
     <p>
-      Tu peux supprimer les données locales de Forma en supprimant les données
-      du site depuis les paramètres de ton navigateur.
+      Tu peux supprimer les données locales de Forma
+      en supprimant les données du site depuis les
+      paramètres de ton navigateur.
     </p>
 
   </div>
@@ -868,12 +1400,13 @@ textarea.field{
 
 </main>
 
-
 <div id="coinModal" class="modal-bg">
 
   <div class="modal">
 
-    <h2>Tu n'as plus de Coins</h2>
+    <h2>
+      Tu n'as plus de Coins
+    </h2>
 
     <p class="muted">
       Utilise un abonnement ou achète des Coins pour continuer.
@@ -883,6 +1416,7 @@ textarea.field{
 
       <button
         class="primary"
+        type="button"
         onclick="closeModal();showPage('plans')"
       >
         Voir les abonnements
@@ -890,6 +1424,7 @@ textarea.field{
 
       <button
         class="secondary"
+        type="button"
         onclick="closeModal();showPage('shop')"
       >
         Acheter des Coins
@@ -901,12 +1436,13 @@ textarea.field{
 
 </div>
 
-
 <div id="feedbackModal" class="modal-bg">
 
   <div class="modal">
 
-    <h2>Merci pour ton retour</h2>
+    <h2>
+      Merci pour ton retour
+    </h2>
 
     <p class="muted">
       Ton avis a été enregistré.
@@ -914,6 +1450,7 @@ textarea.field{
 
     <button
       class="primary"
+      type="button"
       onclick="closeFeedback()"
     >
       Fermer
@@ -923,21 +1460,23 @@ textarea.field{
 
 </div>
 
-
 <div id="cookieBanner" class="cookie hidden">
 
-  <strong>Bienvenue sur Forma</strong>
+  <strong>
+    Bienvenue sur Forma
+  </strong>
 
   <p class="muted">
-    Forma utilise le stockage local nécessaire au fonctionnement du compte
-    et de tes préférences. Aucun outil d'analyse optionnel n'est activé
-    dans cette version.
+    Forma utilise le stockage local nécessaire au fonctionnement
+    du compte et de tes préférences. Aucun outil d'analyse
+    optionnel n'est activé dans cette version.
   </p>
 
   <div class="actions">
 
     <button
       class="primary"
+      type="button"
       onclick="acceptCookies()"
     >
       Accepter
@@ -945,6 +1484,7 @@ textarea.field{
 
     <button
       class="secondary"
+      type="button"
       onclick="refuseCookies()"
     >
       Refuser
@@ -952,6 +1492,7 @@ textarea.field{
 
     <button
       class="secondary"
+      type="button"
       onclick="customizeCookies()"
     >
       Personnaliser
@@ -960,7 +1501,6 @@ textarea.field{
   </div>
 
 </div>
-
 
 <script>
 
@@ -971,18 +1511,18 @@ textarea.field{
 const STORAGE_KEY = "forma_account_v7";
 
 const defaultAccount = {
-  id: Math.random().toString(36).slice(2, 8),
-  dailyCoins: 1,
-  purchasedCoins: 0,
-  plan: "Gratuit",
-  nextRechargeAt: Date.now() + 86400000,
-  history: [],
-  feedback: [],
-  privacyAccepted: false,
-  cookiesChoice: null,
-  stripeCustomerId: null,
-  lastStripeSessionId: null,
-  processedCoinSessionIds: []
+  id: Math.random().toString(36).slice(2,8),
+  dailyCoins:1,
+  purchasedCoins:0,
+  plan:"Gratuit",
+  nextRechargeAt:Date.now() + 86400000,
+  history:[],
+  feedback:[],
+  privacyAccepted:false,
+  cookiesChoice:null,
+  stripeCustomerId:null,
+  lastStripeSessionId:null,
+  processedCoinSessionIds:[]
 };
 
 let account = loadAccount();
@@ -993,18 +1533,15 @@ let currentQuestionIndex = 0;
 let answers = {};
 let generationResult = null;
 
-
-/* =========================================================
-   CHARGEMENT COMPTE
-========================================================= */
-
 function loadAccount(){
 
   try{
 
     const saved =
       JSON.parse(
-        localStorage.getItem(STORAGE_KEY)
+        localStorage.getItem(
+          STORAGE_KEY
+        )
       );
 
     if(saved){
@@ -1014,10 +1551,14 @@ function loadAccount(){
         ...saved,
 
         dailyCoins:
-          Number(saved.dailyCoins ?? 1),
+          Number(
+            saved.dailyCoins ?? 1
+          ),
 
         purchasedCoins:
-          Number(saved.purchasedCoins ?? 0),
+          Number(
+            saved.purchasedCoins ?? 0
+          ),
 
         history:
           Array.isArray(saved.history)
@@ -1030,10 +1571,11 @@ function loadAccount(){
             : [],
 
         processedCoinSessionIds:
-          Array.isArray(saved.processedCoinSessionIds)
+          Array.isArray(
+            saved.processedCoinSessionIds
+          )
             ? saved.processedCoinSessionIds
             : []
-
       };
 
     }
@@ -1050,8 +1592,8 @@ function loadAccount(){
   return {
     ...defaultAccount
   };
-}
 
+}
 
 function saveAccount(){
 
@@ -1064,7 +1606,6 @@ function saveAccount(){
 
 }
 
-
 /* =========================================================
    COINS
 ========================================================= */
@@ -1076,35 +1617,52 @@ function totalCoins(){
   }
 
   return (
-    Math.max(0, account.dailyCoins) +
-    Math.max(0, account.purchasedCoins)
+    Math.max(
+      0,
+      account.dailyCoins
+    ) +
+    Math.max(
+      0,
+      account.purchasedCoins
+    )
   );
 
 }
 
-
 function updateUI(){
 
-  const total = totalCoins();
+  const total =
+    totalCoins();
 
   const coinBalance =
-    document.getElementById("coinBalance");
+    document.getElementById(
+      "coinBalance"
+    );
 
   const accountCoins =
-    document.getElementById("accountCoins");
+    document.getElementById(
+      "accountCoins"
+    );
 
   const accountDaily =
-    document.getElementById("accountDaily");
+    document.getElementById(
+      "accountDaily"
+    );
 
   const accountPurchased =
-    document.getElementById("accountPurchased");
+    document.getElementById(
+      "accountPurchased"
+    );
 
   const accountPlan =
-    document.getElementById("accountPlan");
+    document.getElementById(
+      "accountPlan"
+    );
 
   const nextRecharge =
-    document.getElementById("nextRecharge");
-
+    document.getElementById(
+      "nextRecharge"
+    );
 
   if(coinBalance){
 
@@ -1115,7 +1673,6 @@ function updateUI(){
 
   }
 
-
   if(accountCoins){
 
     accountCoins.textContent =
@@ -1124,7 +1681,6 @@ function updateUI(){
         : total;
 
   }
-
 
   if(accountDaily){
 
@@ -1135,14 +1691,12 @@ function updateUI(){
 
   }
 
-
   if(accountPurchased){
 
     accountPurchased.textContent =
       account.purchasedCoins;
 
   }
-
 
   if(accountPlan){
 
@@ -1151,22 +1705,21 @@ function updateUI(){
 
   }
 
-
   if(nextRecharge){
 
     nextRecharge.textContent =
       account.plan === "Pro"
         ? "Générations illimitées"
         : "Prochaine recharge : " +
-          formatDate(account.nextRechargeAt);
+          formatDate(
+            account.nextRechargeAt
+          );
 
   }
-
 
   renderHistory();
 
 }
-
 
 /* =========================================================
    RECHARGE
@@ -1178,8 +1731,13 @@ function checkRecharge(){
     return;
   }
 
-  if(Date.now() < account.nextRechargeAt){
+  if(
+    Date.now() <
+    account.nextRechargeAt
+  ){
+
     return;
+
   }
 
   if(account.plan === "Plus"){
@@ -1199,14 +1757,12 @@ function checkRecharge(){
 
 }
 
-
 setInterval(
   checkRecharge,
   30000
 );
 
 checkRecharge();
-
 
 /* =========================================================
    NAVIGATION
@@ -1216,50 +1772,186 @@ function showPage(name){
 
   document
     .querySelectorAll(".page")
-    .forEach(page => {
+    .forEach(
+      page => {
 
-      page.classList.remove("active");
+        page.classList.remove(
+          "active"
+        );
 
-    });
-
+      }
+    );
 
   const page =
     document.getElementById(
       "page-" + name
     );
 
-
   if(page){
 
-    page.classList.add("active");
+    page.classList.add(
+      "active"
+    );
 
   }
 
-
   document
-    .querySelectorAll(".nav-links button")
-    .forEach(button => {
+    .querySelectorAll(
+      ".nav-links button"
+    )
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        "active",
-        button.dataset.page === name
-      );
+        button.classList.toggle(
+          "active",
+          button.dataset.page === name
+        );
 
-    });
+      }
+    );
 
+  closeMobileMenu();
 
   window.scrollTo({
     top:0,
     behavior:"smooth"
   });
 
-
   if(name === "account"){
+
     updateUI();
+
   }
 
 }
 
+function toggleMobileMenu(){
+
+  const menu =
+    document.getElementById(
+      "mobileMenu"
+    );
+
+  const button =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+  if(!menu){
+    return;
+  }
+
+  const isOpen =
+    menu.classList.toggle(
+      "open"
+    );
+
+  if(button){
+
+    button.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    button.setAttribute(
+      "aria-label",
+      isOpen
+        ? "Fermer le menu"
+        : "Ouvrir le menu"
+    );
+
+    button.textContent =
+      isOpen
+        ? "✕"
+        : "☰";
+
+  }
+
+}
+
+function closeMobileMenu(){
+
+  const menu =
+    document.getElementById(
+      "mobileMenu"
+    );
+
+  const button =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+  if(menu){
+
+    menu.classList.remove(
+      "open"
+    );
+
+  }
+
+  if(button){
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+    button.setAttribute(
+      "aria-label",
+      "Ouvrir le menu"
+    );
+
+    button.textContent =
+      "☰";
+
+  }
+
+}
+
+function mobileNavigate(name){
+
+  showPage(name);
+
+}
+
+/* Fermer le menu en cliquant ailleurs */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const menu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+    const button =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+
+    if(
+      !menu ||
+      !menu.classList.contains("open")
+    ){
+
+      return;
+
+    }
+
+    if(
+      menu.contains(event.target) ||
+      button?.contains(event.target)
+    ){
+
+      return;
+
+    }
+
+    closeMobileMenu();
+
+  }
+);
 
 /* =========================================================
    OUTILS
@@ -1273,6 +1965,7 @@ const TOOLS = {
     name:"Créateur de CV",
     description:
       "Crée un CV professionnel à partir de tes informations.",
+
     questions:[
 
       {
@@ -1417,15 +2110,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   lettre:{
+
     id:"lettre",
     icon:"✉️",
     name:"Lettre de motivation",
     description:
       "Transforme tes réponses en lettre de motivation naturelle.",
+
     questions:[
 
       {
@@ -1488,15 +2183,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   presentation:{
+
     id:"presentation",
     icon:"👤",
     name:"Présentation personnelle",
     description:
       "Crée une présentation claire et naturelle.",
+
     questions:[
 
       {
@@ -1547,15 +2244,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   message:{
+
     id:"message",
     icon:"💬",
     name:"Générateur de messages",
     description:
       "Crée un message adapté au contexte et au ton choisi.",
+
     questions:[
 
       {
@@ -1628,15 +2327,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   objectifs:{
+
     id:"objectifs",
     icon:"🎯",
     name:"Générateur d'objectifs",
     description:
       "Transforme tes idées en objectifs clairs.",
+
     questions:[
 
       {
@@ -1674,15 +2375,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   motivation:{
+
     id:"motivation",
     icon:"🔥",
     name:"Générateur de motivation",
     description:
       "Crée un texte de motivation personnalisé.",
+
     questions:[
 
       {
@@ -1723,15 +2426,17 @@ const TOOLS = {
       }
 
     ]
+
   },
 
-
   planning:{
+
     id:"planning",
     icon:"📅",
     name:"Générateur de planning",
     description:
       "Organise tes tâches, contraintes et objectifs.",
+
     questions:[
 
       {
@@ -1774,10 +2479,10 @@ const TOOLS = {
       }
 
     ]
+
   }
 
 };
-
 
 /* =========================================================
    AFFICHAGE OUTILS
@@ -1786,7 +2491,9 @@ const TOOLS = {
 function renderTools(){
 
   const container =
-    document.getElementById("toolsGrid");
+    document.getElementById(
+      "toolsGrid"
+    );
 
   if(!container){
     return;
@@ -1794,51 +2501,68 @@ function renderTools(){
 
   container.innerHTML = "";
 
-  Object.values(TOOLS).forEach(tool => {
+  Object.values(
+    TOOLS
+  ).forEach(
+    tool => {
 
-    const card =
-      document.createElement("div");
+      const card =
+        document.createElement(
+          "div"
+        );
 
-    card.className = "card";
+      card.className =
+        "card";
 
-    card.innerHTML = `
-      <div class="tool-icon">
-        ${tool.icon}
-      </div>
+      card.innerHTML = `
 
-      <h3>
-        ${escapeHTML(tool.name)}
-      </h3>
+        <div class="tool-icon">
+          ${tool.icon}
+        </div>
 
-      <p>
-        ${escapeHTML(tool.description)}
-      </p>
+        <h3>
+          ${escapeHTML(
+            tool.name
+          )}
+        </h3>
 
-      <div class="price">
-        1 Coin
-      </div>
+        <p>
+          ${escapeHTML(
+            tool.description
+          )}
+        </p>
 
-      <button
-        class="primary"
-        style="width:100%"
-      >
-        Utiliser
-      </button>
-    `;
+        <div class="price">
+          1 Coin
+        </div>
 
-    card
-      .querySelector("button")
-      .addEventListener(
-        "click",
-        () => startGenerator(tool.id)
+        <button
+          class="primary"
+          type="button"
+          style="width:100%"
+        >
+          Utiliser
+        </button>
+
+      `;
+
+      card
+        .querySelector("button")
+        .addEventListener(
+          "click",
+          () => startGenerator(
+            tool.id
+          )
+        );
+
+      container.appendChild(
+        card
       );
 
-    container.appendChild(card);
-
-  });
+    }
+  );
 
 }
-
 
 /* =========================================================
    GENERATEUR
@@ -1856,17 +2580,15 @@ function startGenerator(toolId){
     openCoinModal();
 
     return;
-  }
 
+  }
 
   currentTool =
     TOOLS[toolId];
 
-
   if(!currentTool){
     return;
   }
-
 
   answers = {};
 
@@ -1874,20 +2596,23 @@ function startGenerator(toolId){
 
   buildQuestions();
 
-  showPage("generator");
+  showPage(
+    "generator"
+  );
 
   renderQuestion();
 
 }
 
-
 function buildQuestions(){
 
   if(!currentTool){
-    currentQuestions = [];
-    return;
-  }
 
+    currentQuestions = [];
+
+    return;
+
+  }
 
   currentQuestions =
     currentTool.questions.filter(
@@ -1895,11 +2620,16 @@ function buildQuestions(){
 
         if(
           currentTool.id === "cv" &&
-          question.key.startsWith("experience") &&
+          question.key.startsWith(
+            "experience"
+          ) &&
           question.key !== "experience"
         ){
 
-          return answers.experience === "Oui";
+          return (
+            answers.experience ===
+            "Oui"
+          );
 
         }
 
@@ -1909,7 +2639,6 @@ function buildQuestions(){
     );
 
 }
-
 
 /* =========================================================
    QUESTIONNAIRE
@@ -1922,11 +2651,14 @@ function renderQuestion(){
       "generatorContainer"
     );
 
+  if(
+    !container ||
+    !currentTool
+  ){
 
-  if(!container || !currentTool){
     return;
-  }
 
+  }
 
   if(
     currentQuestionIndex >=
@@ -1936,52 +2668,63 @@ function renderQuestion(){
     generateResult();
 
     return;
-  }
 
+  }
 
   const question =
     currentQuestions[
       currentQuestionIndex
     ];
 
-
   const total =
     currentQuestions.length;
 
-
   const percent =
     Math.round(
-      (currentQuestionIndex / total) * 100
+      (
+        currentQuestionIndex /
+        total
+      ) * 100
     );
-
 
   container.innerHTML = `
 
     <div class="form-card">
 
       <div class="question-number">
-        Question ${currentQuestionIndex + 1}
-        sur ${total}
+
+        Question
+        ${currentQuestionIndex + 1}
+        sur
+        ${total}
+
       </div>
 
       <div class="progress">
 
         <div
           class="progress-bar"
-          style="width:${Math.max(percent,5)}%"
+          style="
+            width:${Math.max(
+              percent,
+              5
+            )}%
+          "
         ></div>
 
       </div>
 
       <div class="question-title">
 
-        ${escapeHTML(question.label)}
+        ${escapeHTML(
+          question.label
+        )}
 
         ${
           question.optional
             ? `<span class="optional">
-                 — Facultatif
-               </span>`
+                — Facultatif
+              </span>`
             : ""
         }
 
@@ -2009,6 +2752,7 @@ function renderQuestion(){
               <button
                 class="secondary"
                 id="backBtn"
+                type="button"
               >
                 Retour
               </button>
@@ -2019,9 +2763,11 @@ function renderQuestion(){
         <button
           class="primary"
           id="nextBtn"
+          type="button"
         >
           ${
-            currentQuestionIndex === total - 1
+            currentQuestionIndex ===
+            total - 1
               ? "Générer"
               : "Suivant"
           }
@@ -2033,13 +2779,14 @@ function renderQuestion(){
 
   `;
 
-
-  renderQuestionInput(question);
-
+  renderQuestionInput(
+    question
+  );
 
   const nextBtn =
-    document.getElementById("nextBtn");
-
+    document.getElementById(
+      "nextBtn"
+    );
 
   if(nextBtn){
 
@@ -2050,10 +2797,10 @@ function renderQuestion(){
 
   }
 
-
   const backBtn =
-    document.getElementById("backBtn");
-
+    document.getElementById(
+      "backBtn"
+    );
 
   if(backBtn){
 
@@ -2066,40 +2813,46 @@ function renderQuestion(){
 
 }
 
-
 /* =========================================================
    INPUT QUESTION
 ========================================================= */
 
-function renderQuestionInput(question){
+function renderQuestionInput(
+  question
+){
 
   const container =
     document.getElementById(
       "questionInput"
     );
 
-
   if(!container){
     return;
   }
 
-
-  if(question.type === "choice"){
+  if(
+    question.type ===
+    "choice"
+  ){
 
     const wrapper =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     wrapper.className =
       "choice-grid";
-
 
     question.choices.forEach(
       choice => {
 
         const button =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
-        button.type = "button";
+        button.type =
+          "button";
 
         button.className =
           "choice-btn";
@@ -2107,10 +2860,10 @@ function renderQuestionInput(question){
         button.textContent =
           choice;
 
-
         if(
-          answers[question.key] ===
-          choice
+          answers[
+            question.key
+          ] === choice
         ){
 
           button.classList.add(
@@ -2119,27 +2872,28 @@ function renderQuestionInput(question){
 
         }
 
-
         button.addEventListener(
           "click",
           () => {
 
-            answers[question.key] =
+            answers[
+              question.key
+            ] =
               choice;
-
 
             wrapper
               .querySelectorAll(
                 ".choice-btn"
               )
-              .forEach(btn => {
+              .forEach(
+                btn => {
 
-                btn.classList.remove(
-                  "selected"
-                );
+                  btn.classList.remove(
+                    "selected"
+                  );
 
-              });
-
+                }
+              );
 
             button.classList.add(
               "selected"
@@ -2148,7 +2902,6 @@ function renderQuestionInput(question){
           }
         );
 
-
         wrapper.appendChild(
           button
         );
@@ -2156,56 +2909,62 @@ function renderQuestionInput(question){
       }
     );
 
-
     container.appendChild(
       wrapper
     );
 
     return;
+
   }
 
-
   const input =
-    question.type === "textarea"
-      ? document.createElement("textarea")
-      : document.createElement("input");
-
+    question.type ===
+    "textarea"
+      ? document.createElement(
+          "textarea"
+        )
+      : document.createElement(
+          "input"
+        );
 
   input.className =
     "field";
 
-
-  if(question.type !== "textarea"){
+  if(
+    question.type !==
+    "textarea"
+  ){
 
     input.type =
-      question.type || "text";
+      question.type ||
+      "text";
 
   }
 
-
   input.placeholder =
-    question.placeholder || "";
-
+    question.placeholder ||
+    "";
 
   input.value =
-    answers[question.key] || "";
-
+    answers[
+      question.key
+    ] || "";
 
   input.addEventListener(
     "input",
     () => {
 
-      answers[question.key] =
+      answers[
+        question.key
+      ] =
         input.value;
 
     }
   );
 
-
   container.appendChild(
     input
   );
-
 
   setTimeout(
     () => input.focus(),
@@ -2213,7 +2972,6 @@ function renderQuestionInput(question){
   );
 
 }
-
 
 /* =========================================================
    QUESTION SUIVANTE
@@ -2226,29 +2984,29 @@ function nextQuestion(){
       currentQuestionIndex
     ];
 
-
   if(!question){
     return;
   }
-
 
   const field =
     document.querySelector(
       "#questionInput .field"
     );
 
-
   if(field){
 
-    answers[question.key] =
+    answers[
+      question.key
+    ] =
       field.value.trim();
 
   }
 
-
   if(
     !question.optional &&
-    !answers[question.key]
+    !answers[
+      question.key
+    ]
   ){
 
     showQuestionError(
@@ -2256,18 +3014,18 @@ function nextQuestion(){
     );
 
     return;
-  }
 
+  }
 
   if(
     currentTool.id === "cv" &&
-    question.key === "experience"
+    question.key ===
+      "experience"
   ){
 
     buildQuestions();
 
   }
-
 
   currentQuestionIndex++;
 
@@ -2275,39 +3033,41 @@ function nextQuestion(){
 
 }
 
-
 function previousQuestion(){
 
-  if(currentQuestionIndex <= 0){
+  if(
+    currentQuestionIndex <= 0
+  ){
 
-    showPage("tools");
+    showPage(
+      "tools"
+    );
 
     return;
-  }
 
+  }
 
   const question =
     currentQuestions[
       currentQuestionIndex
     ];
 
-
   const field =
     document.querySelector(
       "#questionInput .field"
     );
-
 
   if(
     field &&
     question
   ){
 
-    answers[question.key] =
+    answers[
+      question.key
+    ] =
       field.value.trim();
 
   }
-
 
   currentQuestionIndex--;
 
@@ -2317,27 +3077,30 @@ function previousQuestion(){
 
 }
 
-
-function showQuestionError(message){
+function showQuestionError(
+  message
+){
 
   const box =
     document.getElementById(
       "questionError"
     );
 
-
   if(box){
 
     box.innerHTML = `
+
       <div class="error">
-        ${escapeHTML(message)}
+        ${escapeHTML(
+          message
+        )}
       </div>
+
     `;
 
   }
 
 }
-
 
 /* =========================================================
    GENERATION IA
@@ -2350,11 +3113,14 @@ async function generateResult(){
       "generatorContainer"
     );
 
+  if(
+    !container ||
+    !currentTool
+  ){
 
-  if(!container || !currentTool){
     return;
-  }
 
+  }
 
   if(
     currentTool.id === "cv" &&
@@ -2365,27 +3131,24 @@ async function generateResult(){
     const emailIndex =
       currentQuestions.findIndex(
         question =>
-          question.key === "email"
+          question.key ===
+          "email"
       );
-
 
     currentQuestionIndex =
       emailIndex >= 0
         ? emailIndex
         : 0;
 
-
     renderQuestion();
-
 
     showQuestionError(
       "Indique au moins un e-mail ou un numéro de téléphone."
     );
 
-
     return;
-  }
 
+  }
 
   container.innerHTML = `
 
@@ -2398,13 +3161,13 @@ async function generateResult(){
       </h2>
 
       <p class="muted">
-        Forma analyse tes réponses et crée ton résultat.
+        Forma analyse tes réponses
+        et crée ton résultat.
       </p>
 
     </div>
 
   `;
-
 
   try{
 
@@ -2420,16 +3183,17 @@ async function generateResult(){
           },
 
           body:JSON.stringify({
-            tool:currentTool.id,
-            answers:answers
+            tool:
+              currentTool.id,
+
+            answers:
+              answers
           })
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(!response.ok){
 
@@ -2440,14 +3204,13 @@ async function generateResult(){
 
     }
 
-
     generationResult =
       data.result;
 
-
     if(
       !generationResult ||
-      typeof generationResult !== "object"
+      typeof generationResult !==
+        "object"
     ){
 
       throw new Error(
@@ -2456,13 +3219,11 @@ async function generateResult(){
 
     }
 
-
     spendCoin();
 
     renderResult(
       generationResult
     );
-
 
   }catch(error){
 
@@ -2470,7 +3231,6 @@ async function generateResult(){
       "Erreur génération :",
       error
     );
-
 
     container.innerHTML = `
 
@@ -2481,13 +3241,16 @@ async function generateResult(){
         </h2>
 
         <div class="error">
-          ${escapeHTML(error.message)}
+          ${escapeHTML(
+            error.message
+          )}
         </div>
 
         <div class="actions">
 
           <button
             class="secondary"
+            type="button"
             onclick="showPage('tools')"
           >
             Retour aux outils
@@ -2495,7 +3258,10 @@ async function generateResult(){
 
           <button
             class="primary"
-            onclick="startGenerator('${escapeHTML(currentTool.id)}')"
+            type="button"
+            onclick="startGenerator('${escapeHTML(
+              currentTool.id
+            )}')"
           >
             Réessayer
           </button>
@@ -2510,23 +3276,29 @@ async function generateResult(){
 
 }
 
-
 /* =========================================================
    DEPENSE COIN
 ========================================================= */
 
 function spendCoin(){
 
-  if(account.plan === "Pro"){
+  if(
+    account.plan === "Pro"
+  ){
+
     return;
+
   }
 
-
-  if(account.dailyCoins > 0){
+  if(
+    account.dailyCoins > 0
+  ){
 
     account.dailyCoins--;
 
-  }else if(account.purchasedCoins > 0){
+  }else if(
+    account.purchasedCoins > 0
+  ){
 
     account.purchasedCoins--;
 
@@ -2538,21 +3310,20 @@ function spendCoin(){
 
   }
 
-
   saveAccount();
 
 }
-
 
 /* =========================================================
    AJOUT COINS
 ========================================================= */
 
-function addPurchasedCoins(amount){
+function addPurchasedCoins(
+  amount
+){
 
   amount =
     Number(amount);
-
 
   if(
     !Number.isFinite(amount) ||
@@ -2563,44 +3334,42 @@ function addPurchasedCoins(amount){
 
   }
 
-
   account.purchasedCoins +=
     amount;
 
-
   account.history.unshift({
 
-    type:"Achat de Coins",
+    type:
+      "Achat de Coins",
 
     label:
       `+${amount} Coins`,
 
-    date:Date.now()
+    date:
+      Date.now()
 
   });
-
 
   saveAccount();
 
 }
 
-
 /* =========================================================
    RESULTAT
 ========================================================= */
 
-function renderResult(result){
+function renderResult(
+  result
+){
 
   const container =
     document.getElementById(
       "generatorContainer"
     );
 
-
   if(!container){
     return;
   }
-
 
   let html = `
 
@@ -2610,35 +3379,38 @@ function renderResult(result){
 
   `;
 
-
   if(result.title){
 
     html += `
 
       <h1>
-        ${escapeHTML(result.title)}
+        ${escapeHTML(
+          result.title
+        )}
       </h1>
 
     `;
 
   }
 
-
   if(result.content){
 
     html += `
 
       <div class="result-content">
-        ${escapeHTML(result.content)}
+        ${escapeHTML(
+          result.content
+        )}
       </div>
 
     `;
 
   }
 
-
   if(
-    Array.isArray(result.tips) &&
+    Array.isArray(
+      result.tips
+    ) &&
     result.tips.length
   ){
 
@@ -2652,21 +3424,21 @@ function renderResult(result){
 
     `;
 
-
     result.tips.forEach(
       tip => {
 
         html += `
 
           <li>
-            ${escapeHTML(tip)}
+            ${escapeHTML(
+              tip
+            )}
           </li>
 
         `;
 
       }
     );
-
 
     html += `
 
@@ -2676,7 +3448,6 @@ function renderResult(result){
 
   }
 
-
   html += `
 
       </div>
@@ -2685,6 +3456,7 @@ function renderResult(result){
 
         <button
           class="primary"
+          type="button"
           onclick="copyResult()"
         >
           Copier
@@ -2692,6 +3464,7 @@ function renderResult(result){
 
         <button
           class="secondary"
+          type="button"
           onclick="modifyResult()"
         >
           Modifier
@@ -2703,6 +3476,7 @@ function renderResult(result){
 
         <button
           class="secondary"
+          type="button"
           onclick="sendFeedback('good')"
         >
           👍 Utile
@@ -2710,6 +3484,7 @@ function renderResult(result){
 
         <button
           class="secondary"
+          type="button"
           onclick="sendFeedback('bad')"
         >
           👎 Pas utile
@@ -2717,6 +3492,7 @@ function renderResult(result){
 
         <button
           class="secondary"
+          type="button"
           onclick="sendFeedback('report')"
         >
           Signaler
@@ -2728,42 +3504,50 @@ function renderResult(result){
 
   `;
 
-
   container.innerHTML =
     html;
 
 }
 
-
 /* =========================================================
    TEXTE RESULTAT
 ========================================================= */
 
-function resultToText(result){
+function resultToText(
+  result
+){
 
   const lines = [];
 
-
   if(result.title){
-    lines.push(result.title);
-  }
 
+    lines.push(
+      result.title
+    );
+
+  }
 
   if(result.content){
-    lines.push(result.content);
+
+    lines.push(
+      result.content
+    );
+
   }
 
-
   if(
-    Array.isArray(result.tips)
+    Array.isArray(
+      result.tips
+    )
   ){
 
-    if(result.tips.length){
+    if(
+      result.tips.length
+    ){
 
       lines.push(
         "\nConseils :"
       );
-
 
       result.tips.forEach(
         tip => {
@@ -2783,11 +3567,11 @@ function resultToText(result){
 
   }
 
-
-  return lines.join("\n");
+  return lines.join(
+    "\n"
+  );
 
 }
-
 
 /* =========================================================
    COPIER
@@ -2799,12 +3583,10 @@ async function copyResult(){
     return;
   }
 
-
   const text =
     resultToText(
       generationResult
     );
-
 
   try{
 
@@ -2823,26 +3605,20 @@ async function copyResult(){
         "textarea"
       );
 
-
     textarea.value =
       text;
-
 
     document.body.appendChild(
       textarea
     );
 
-
     textarea.select();
-
 
     document.execCommand(
       "copy"
     );
 
-
     textarea.remove();
-
 
     alert(
       "Résultat copié."
@@ -2852,23 +3628,24 @@ async function copyResult(){
 
 }
 
-
 /* =========================================================
    MODIFIER
 ========================================================= */
 
 function modifyResult(){
 
-  currentQuestionIndex = 0;
+  currentQuestionIndex =
+    0;
 
   buildQuestions();
 
-  showPage("generator");
+  showPage(
+    "generator"
+  );
 
   renderQuestion();
 
 }
-
 
 /* =========================================================
    BOUTIQUE COINS
@@ -2903,7 +3680,6 @@ const SHOP_PACKS = [
 
 ];
 
-
 function renderShop(){
 
   const container =
@@ -2911,14 +3687,12 @@ function renderShop(){
       "shopGrid"
     );
 
-
   if(!container){
     return;
   }
 
-
-  container.innerHTML = "";
-
+  container.innerHTML =
+    "";
 
   SHOP_PACKS.forEach(
     pack => {
@@ -2928,10 +3702,8 @@ function renderShop(){
           "div"
         );
 
-
       card.className =
         "card shop-card";
-
 
       card.innerHTML = `
 
@@ -2957,23 +3729,23 @@ function renderShop(){
 
       `;
 
-
       const button =
-        card.querySelector("button");
-
+        card.querySelector(
+          "button"
+        );
 
       if(button){
 
         button.addEventListener(
           "click",
-          () => startCoinStripeCheckout(
-            pack.coins,
-            button
-          )
+          () =>
+            startCoinStripeCheckout(
+              pack.coins,
+              button
+            )
         );
 
       }
-
 
       container.appendChild(
         card
@@ -2983,7 +3755,6 @@ function renderShop(){
   );
 
 }
-
 
 /* =========================================================
    STRIPE — ACHAT COINS
@@ -2997,7 +3768,9 @@ async function startCoinStripeCheckout(
   try{
 
     if(
-      !Number.isFinite(Number(coins)) ||
+      !Number.isFinite(
+        Number(coins)
+      ) ||
       Number(coins) <= 0
     ){
 
@@ -3007,12 +3780,11 @@ async function startCoinStripeCheckout(
 
     }
 
-
-    button.disabled = true;
+    button.disabled =
+      true;
 
     button.textContent =
       "Chargement...";
-
 
     const response =
       await fetch(
@@ -3026,16 +3798,17 @@ async function startCoinStripeCheckout(
           },
 
           body:JSON.stringify({
-            coins:Number(coins),
-            accountId:account.id
+            coins:
+              Number(coins),
+
+            accountId:
+              account.id
           })
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(
       !response.ok ||
@@ -3049,10 +3822,8 @@ async function startCoinStripeCheckout(
 
     }
 
-
     window.location.href =
       data.url;
-
 
   }catch(error){
 
@@ -3061,16 +3832,13 @@ async function startCoinStripeCheckout(
       error
     );
 
-
     alert(
       error.message ||
       "Une erreur est survenue pendant le paiement."
     );
 
-
     button.disabled =
       false;
-
 
     button.textContent =
       "Acheter";
@@ -3078,7 +3846,6 @@ async function startCoinStripeCheckout(
   }
 
 }
-
 
 /* =========================================================
    ABONNEMENTS
@@ -3112,7 +3879,6 @@ const PLANS = [
 
 ];
 
-
 function renderPlans(){
 
   const container =
@@ -3120,27 +3886,24 @@ function renderPlans(){
       "plansGrid"
     );
 
-
   if(!container){
     return;
   }
 
-
-  container.innerHTML = "";
-
+  container.innerHTML =
+    "";
 
   PLANS.forEach(
     plan => {
 
       const isCurrent =
-        account.plan === plan.id;
-
+        account.plan ===
+        plan.id;
 
       const card =
         document.createElement(
           "div"
         );
-
 
       card.className =
         "card plan-card" +
@@ -3150,8 +3913,10 @@ function renderPlans(){
             : ""
         );
 
-
-      if(plan.id === "Gratuit"){
+      if(
+        plan.id ===
+        "Gratuit"
+      ){
 
         card.innerHTML = `
 
@@ -3169,6 +3934,7 @@ function renderPlans(){
 
           <button
             class="secondary"
+            type="button"
             disabled
           >
             ${
@@ -3198,6 +3964,7 @@ function renderPlans(){
 
           <button
             class="primary"
+            type="button"
             data-plan="${plan.id}"
             ${isCurrent ? "disabled" : ""}
           >
@@ -3212,25 +3979,23 @@ function renderPlans(){
 
       }
 
-
       const button =
         card.querySelector(
           "[data-plan]"
         );
 
-
       if(button){
 
         button.addEventListener(
           "click",
-          () => startStripeCheckout(
-            plan.id,
-            button
-          )
+          () =>
+            startStripeCheckout(
+              plan.id,
+              button
+            )
         );
 
       }
-
 
       container.appendChild(
         card
@@ -3239,18 +4004,18 @@ function renderPlans(){
     }
   );
 
-
-  if(account.plan !== "Gratuit"){
+  if(
+    account.plan !==
+    "Gratuit"
+  ){
 
     const disableCard =
       document.createElement(
         "div"
       );
 
-
     disableCard.className =
       "card";
-
 
     disableCard.innerHTML = `
 
@@ -3262,22 +4027,26 @@ function renderPlans(){
         Retourner au plan Gratuit.
       </p>
 
-      <button class="secondary">
+      <button
+        class="secondary"
+        type="button"
+      >
         Désactiver
       </button>
 
     `;
 
-
     disableCard
-      .querySelector("button")
+      .querySelector(
+        "button"
+      )
       .addEventListener(
         "click",
-        () => activatePlan(
-          "Gratuit"
-        )
+        () =>
+          activatePlan(
+            "Gratuit"
+          )
       );
-
 
     container.appendChild(
       disableCard
@@ -3286,7 +4055,6 @@ function renderPlans(){
   }
 
 }
-
 
 /* =========================================================
    STRIPE CHECKOUT ABONNEMENT
@@ -3299,11 +4067,11 @@ async function startStripeCheckout(
 
   try{
 
-    button.disabled = true;
+    button.disabled =
+      true;
 
     button.textContent =
       "Chargement...";
-
 
     const response =
       await fetch(
@@ -3317,16 +4085,17 @@ async function startStripeCheckout(
           },
 
           body:JSON.stringify({
-            plan:plan,
-            accountId:account.id
+            plan:
+              plan,
+
+            accountId:
+              account.id
           })
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(
       !response.ok ||
@@ -3340,10 +4109,8 @@ async function startStripeCheckout(
 
     }
 
-
     window.location.href =
       data.url;
-
 
   }catch(error){
 
@@ -3352,16 +4119,13 @@ async function startStripeCheckout(
       error
     );
 
-
     alert(
       error.message ||
       "Une erreur est survenue."
     );
 
-
     button.disabled =
       false;
-
 
     button.textContent =
       plan === "Plus"
@@ -3372,39 +4136,43 @@ async function startStripeCheckout(
 
 }
 
-
 /* =========================================================
    ACTIVATION DEMO
 ========================================================= */
 
-function activatePlan(plan){
+function activatePlan(
+  plan
+){
 
   const oldPlan =
     account.plan;
 
-
   account.plan =
     plan;
 
+  if(
+    plan === "Pro"
+  ){
 
-  if(plan === "Pro"){
+    account.dailyCoins =
+      0;
 
-    account.dailyCoins = 0;
+  }else if(
+    plan === "Plus"
+  ){
 
-  }else if(plan === "Plus"){
-
-    account.dailyCoins = 10;
+    account.dailyCoins =
+      10;
 
   }else{
 
-    account.dailyCoins = 1;
+    account.dailyCoins =
+      1;
 
   }
 
-
   account.nextRechargeAt =
     Date.now() + 86400000;
-
 
   account.history.unshift({
 
@@ -3419,11 +4187,9 @@ function activatePlan(plan){
 
   });
 
-
   saveAccount();
 
   renderPlans();
-
 
   alert(
     plan === "Gratuit"
@@ -3432,7 +4198,6 @@ function activatePlan(plan){
   );
 
 }
-
 
 /* =========================================================
    RETOUR STRIPE — ABONNEMENT
@@ -3445,12 +4210,15 @@ async function handleStripeReturn(){
       window.location.search
     );
 
-
   const payment =
-    params.get("payment");
+    params.get(
+      "payment"
+    );
 
-
-  if(payment === "cancelled"){
+  if(
+    payment ===
+    "cancelled"
+  ){
 
     window.history.replaceState(
       {},
@@ -3458,24 +4226,27 @@ async function handleStripeReturn(){
       window.location.pathname
     );
 
-
     alert(
       "Paiement annulé."
     );
 
-
     return;
+
   }
 
+  if(
+    payment !==
+    "success"
+  ){
 
-  if(payment !== "success"){
     return;
-  }
 
+  }
 
   const sessionId =
-    params.get("session_id");
-
+    params.get(
+      "session_id"
+    );
 
   if(!sessionId){
 
@@ -3484,8 +4255,8 @@ async function handleStripeReturn(){
     );
 
     return;
-  }
 
+  }
 
   try{
 
@@ -3501,15 +4272,14 @@ async function handleStripeReturn(){
           },
 
           body:JSON.stringify({
-            sessionId:sessionId
+            sessionId:
+              sessionId
           })
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(
       !response.ok ||
@@ -3523,44 +4293,42 @@ async function handleStripeReturn(){
 
     }
 
-
     const previousPlan =
       account.plan;
 
-
     account.plan =
       data.plan;
-
 
     account.stripeCustomerId =
       data.customerId ||
       account.stripeCustomerId ||
       null;
 
-
     account.lastStripeSessionId =
       sessionId;
 
-
-    if(data.plan === "Plus"){
+    if(
+      data.plan ===
+      "Plus"
+    ){
 
       account.dailyCoins =
         10;
 
     }
 
-
-    if(data.plan === "Pro"){
+    if(
+      data.plan ===
+      "Pro"
+    ){
 
       account.dailyCoins =
         0;
 
     }
 
-
     account.nextRechargeAt =
       Date.now() + 86400000;
-
 
     if(
       previousPlan !==
@@ -3582,16 +4350,13 @@ async function handleStripeReturn(){
 
     }
 
-
     saveAccount();
 
     renderPlans();
 
-
     alert(
       `Paiement confirmé ! Ton abonnement ${data.plan} est maintenant activé.`
     );
-
 
   }catch(error){
 
@@ -3600,14 +4365,12 @@ async function handleStripeReturn(){
       error
     );
 
-
     alert(
       error.message ||
       "Impossible de confirmer ton paiement."
     );
 
   }
-
 
   window.history.replaceState(
     {},
@@ -3616,7 +4379,6 @@ async function handleStripeReturn(){
   );
 
 }
-
 
 /* =========================================================
    RETOUR STRIPE — COINS
@@ -3629,12 +4391,15 @@ async function handleCoinStripeReturn(){
       window.location.search
     );
 
-
   const coinPayment =
-    params.get("coin_payment");
+    params.get(
+      "coin_payment"
+    );
 
-
-  if(coinPayment === "cancelled"){
+  if(
+    coinPayment ===
+    "cancelled"
+  ){
 
     window.history.replaceState(
       {},
@@ -3642,25 +4407,27 @@ async function handleCoinStripeReturn(){
       window.location.pathname
     );
 
-
     alert(
       "Achat de Coins annulé."
     );
 
-
     return;
 
   }
 
+  if(
+    coinPayment !==
+    "success"
+  ){
 
-  if(coinPayment !== "success"){
     return;
-  }
 
+  }
 
   const sessionId =
-    params.get("session_id");
-
+    params.get(
+      "session_id"
+    );
 
   if(!sessionId){
 
@@ -3668,18 +4435,15 @@ async function handleCoinStripeReturn(){
       "Paiement effectué, mais la session Stripe est introuvable."
     );
 
-
     window.history.replaceState(
       {},
       document.title,
       window.location.pathname
     );
 
-
     return;
 
   }
-
 
   account.processedCoinSessionIds =
     Array.isArray(
@@ -3687,7 +4451,6 @@ async function handleCoinStripeReturn(){
     )
       ? account.processedCoinSessionIds
       : [];
-
 
   if(
     account.processedCoinSessionIds.includes(
@@ -3701,16 +4464,13 @@ async function handleCoinStripeReturn(){
       window.location.pathname
     );
 
-
     alert(
       "Cet achat de Coins a déjà été ajouté à ton compte."
     );
 
-
     return;
 
   }
-
 
   try{
 
@@ -3726,15 +4486,14 @@ async function handleCoinStripeReturn(){
           },
 
           body:JSON.stringify({
-            sessionId:sessionId
+            sessionId:
+              sessionId
           })
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(
       !response.ok ||
@@ -3748,13 +4507,15 @@ async function handleCoinStripeReturn(){
 
     }
 
-
     const coins =
-      Number(data.coins);
-
+      Number(
+        data.coins
+      );
 
     if(
-      !Number.isFinite(coins) ||
+      !Number.isFinite(
+        coins
+      ) ||
       coins <= 0
     ){
 
@@ -3764,36 +4525,33 @@ async function handleCoinStripeReturn(){
 
     }
 
-
     addPurchasedCoins(
       coins
     );
-
 
     account.processedCoinSessionIds.push(
       sessionId
     );
 
-
     if(
-      account.processedCoinSessionIds.length > 50
+      account.processedCoinSessionIds.length >
+      50
     ){
 
       account.processedCoinSessionIds =
-        account.processedCoinSessionIds.slice(-50);
+        account.processedCoinSessionIds.slice(
+          -50
+        );
 
     }
-
 
     saveAccount();
 
     renderShop();
 
-
     alert(
       `Paiement confirmé ! ${coins} Coins ont été ajoutés à ton compte.`
     );
-
 
   }catch(error){
 
@@ -3802,14 +4560,12 @@ async function handleCoinStripeReturn(){
       error
     );
 
-
     alert(
       error.message ||
       "Impossible de confirmer l'achat des Coins."
     );
 
   }
-
 
   window.history.replaceState(
     {},
@@ -3818,7 +4574,6 @@ async function handleCoinStripeReturn(){
   );
 
 }
-
 
 /* =========================================================
    HISTORIQUE
@@ -3831,11 +4586,9 @@ function renderHistory(){
       "accountHistory"
     );
 
-
   if(!container){
     return;
   }
-
 
   if(
     !account.history.length
@@ -3849,8 +4602,8 @@ function renderHistory(){
       `;
 
     return;
-  }
 
+  }
 
   container.innerHTML =
     account.history
@@ -3890,16 +4643,18 @@ function renderHistory(){
 
 }
 
-
 /* =========================================================
    FEEDBACK
 ========================================================= */
 
-function sendFeedback(type){
+function sendFeedback(
+  type
+){
 
   account.feedback.push({
 
-    type:type,
+    type:
+      type,
 
     tool:
       currentTool?.id ||
@@ -3910,9 +4665,7 @@ function sendFeedback(type){
 
   });
 
-
   saveAccount();
-
 
   fetch(
     "/api/feedback",
@@ -3925,11 +4678,14 @@ function sendFeedback(type){
       },
 
       body:JSON.stringify({
-        type:type,
+
+        type:
+          type,
 
         tool:
           currentTool?.id ||
           null
+
       })
 
     }
@@ -3937,12 +4693,10 @@ function sendFeedback(type){
     () => {}
   );
 
-
   const modal =
     document.getElementById(
       "feedbackModal"
     );
-
 
   if(modal){
 
@@ -3954,14 +4708,12 @@ function sendFeedback(type){
 
 }
 
-
 function closeFeedback(){
 
   const modal =
     document.getElementById(
       "feedbackModal"
     );
-
 
   if(modal){
 
@@ -3972,7 +4724,6 @@ function closeFeedback(){
   }
 
 }
-
 
 /* =========================================================
    ZERO COINS
@@ -3985,7 +4736,6 @@ function openCoinModal(){
       "coinModal"
     );
 
-
   if(modal){
 
     modal.classList.add(
@@ -3996,14 +4746,12 @@ function openCoinModal(){
 
 }
 
-
 function closeModal(){
 
   const modal =
     document.getElementById(
       "coinModal"
     );
-
 
   if(modal){
 
@@ -4015,28 +4763,30 @@ function closeModal(){
 
 }
 
-
 /* =========================================================
    CONFIDENTIALITE / COOKIES
 ========================================================= */
 
 function initPrivacy(){
 
-  if(!account.privacyAccepted){
+  if(
+    !account.privacyAccepted
+  ){
 
     showPrivacyFirstVisit();
 
     return;
+
   }
 
-
-  if(!account.cookiesChoice){
+  if(
+    !account.cookiesChoice
+  ){
 
     const banner =
       document.getElementById(
         "cookieBanner"
       );
-
 
     if(banner){
 
@@ -4050,7 +4800,6 @@ function initPrivacy(){
 
 }
 
-
 function showPrivacyFirstVisit(){
 
   const overlay =
@@ -4058,18 +4807,14 @@ function showPrivacyFirstVisit(){
       "div"
     );
 
-
   overlay.id =
     "privacyFirstVisit";
-
 
   overlay.className =
     "modal-bg";
 
-
   overlay.style.display =
     "flex";
-
 
   overlay.innerHTML = `
 
@@ -4092,6 +4837,7 @@ function showPrivacyFirstVisit(){
           gap:10px;
           align-items:flex-start;
           margin:20px 0;
+          line-height:1.5;
         "
       >
 
@@ -4110,6 +4856,7 @@ function showPrivacyFirstVisit(){
       <button
         class="primary"
         id="continuePrivacy"
+        type="button"
         disabled
         style="width:100%"
       >
@@ -4119,6 +4866,7 @@ function showPrivacyFirstVisit(){
       <button
         class="secondary"
         id="readPrivacyButton"
+        type="button"
         style="
           width:100%;
           margin-top:10px
@@ -4131,29 +4879,24 @@ function showPrivacyFirstVisit(){
 
   `;
 
-
   document.body.appendChild(
     overlay
   );
-
 
   const check =
     document.getElementById(
       "privacyCheck"
     );
 
-
   const continueButton =
     document.getElementById(
       "continuePrivacy"
     );
 
-
   const readButton =
     document.getElementById(
       "readPrivacyButton"
     );
-
 
   if(check){
 
@@ -4173,7 +4916,6 @@ function showPrivacyFirstVisit(){
 
   }
 
-
   if(continueButton){
 
     continueButton.addEventListener(
@@ -4183,20 +4925,18 @@ function showPrivacyFirstVisit(){
         account.privacyAccepted =
           true;
 
-
         saveAccount();
-
 
         overlay.remove();
 
-
-        if(!account.cookiesChoice){
+        if(
+          !account.cookiesChoice
+        ){
 
           const banner =
             document.getElementById(
               "cookieBanner"
             );
-
 
           if(banner){
 
@@ -4212,7 +4952,6 @@ function showPrivacyFirstVisit(){
     );
 
   }
-
 
   if(readButton){
 
@@ -4233,21 +4972,17 @@ function showPrivacyFirstVisit(){
 
 }
 
-
 function acceptCookies(){
 
   account.cookiesChoice =
     "accepted";
 
-
   saveAccount();
-
 
   const banner =
     document.getElementById(
       "cookieBanner"
     );
-
 
   if(banner){
 
@@ -4258,22 +4993,18 @@ function acceptCookies(){
   }
 
 }
-
 
 function refuseCookies(){
 
   account.cookiesChoice =
     "refused";
 
-
   saveAccount();
-
 
   const banner =
     document.getElementById(
       "cookieBanner"
     );
-
 
   if(banner){
 
@@ -4284,7 +5015,6 @@ function refuseCookies(){
   }
 
 }
-
 
 function customizeCookies(){
 
@@ -4292,19 +5022,15 @@ function customizeCookies(){
     "Stockage nécessaire : activé. Analyse optionnelle : désactivée."
   );
 
-
   account.cookiesChoice =
     "customized";
 
-
   saveAccount();
-
 
   const banner =
     document.getElementById(
       "cookieBanner"
     );
-
 
   if(banner){
 
@@ -4316,12 +5042,13 @@ function customizeCookies(){
 
 }
 
-
 /* =========================================================
    UTILITAIRES
 ========================================================= */
 
-function formatDate(timestamp){
+function formatDate(
+  timestamp
+){
 
   if(!timestamp){
 
@@ -4329,20 +5056,21 @@ function formatDate(timestamp){
 
   }
 
-
-  return new Date(timestamp)
-    .toLocaleString(
-      "fr-FR",
-      {
-        dateStyle:"short",
-        timeStyle:"short"
-      }
-    );
+  return new Date(
+    timestamp
+  ).toLocaleString(
+    "fr-FR",
+    {
+      dateStyle:"short",
+      timeStyle:"short"
+    }
+  );
 
 }
 
-
-function escapeHTML(value){
+function escapeHTML(
+  value
+){
 
   return String(
     value ?? ""
@@ -4369,7 +5097,6 @@ function escapeHTML(value){
     );
 
 }
-
 
 /* =========================================================
    INITIALISATION
