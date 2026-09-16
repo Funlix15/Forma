@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import OpenAI from "openai";
+import Stripe from "stripe";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -13,10 +14,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: "1mb" }));
-app.use(express.static(path.join(__dirname, "Public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const client = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
+
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
 const AI_RULES = `
@@ -223,13 +228,57 @@ Retourne uniquement les données correspondant au schéma.
     });
   }
 });
+app.post("/api/create-checkout-session", async (req, res) => {
+  try {
+    if (!stripe) {
+      return res.status(503).json({
+        error: "Stripe n'est pas configuré."
+      });
+    }
+
+    const { plan } = req.body || {};
+
+    const prices = {
+      Plus: process.env.STRIPE_PRICE_PLUS,
+      Pro: process.env.STRIPE_PRICE_PRO
+    };
+
+    const priceId = prices[plan];
+
+    if (!priceId) {
+      return res.status(400).json({
+        error: "Plan invalide."
+      });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1
+        }
+      ],
+      success_url: "https://forma-3j9w.onrender.com?payment=success",
+      cancel_url: "https://forma-3j9w.onrender.com?payment=cancelled"
+    });
+
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error("ERREUR STRIPE :", error);
+
+    res.status(500).json({
+      error: error?.message || "Erreur Stripe."
+    });
+  }
+});
 
 app.post("/api/feedback", (req, res) => {
   res.json({ ok: true });
 });
 
 app.get("/{*splat}", (req, res) => {
-  res.sendFile(path.join(__dirname, "Public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
