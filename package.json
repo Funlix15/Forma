@@ -1,0 +1,14 @@
+{
+  "name": "forma-ai",
+  "version": "8.0.0",
+  "description": "Forma - Tu réponds. Forma crée.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "openai": "^5.19.1"
+  }
+}

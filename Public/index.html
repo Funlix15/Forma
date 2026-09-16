@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forma — Tu réponds. Forma crée.</title>
+
+<style>
+:root{
+  --primary:#5b5cf0;
+  --primary2:#7c4dff;
+  --blue:#3b82f6;
+  --bg:#f6f8fc;
+  --card:#fff;
+  --text:#171827;
+  --muted:#70758a;
+  --border:#e5e7f0;
+  --success:#16a34a;
+  --danger:#dc2626;
+  --shadow:0 14px 40px rgba(30,35,80,.08);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{display:none!important}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  max-width:1180px;
+  margin:auto;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  gap:20px;
+}
+
+.logo{
+  border:0;
+  background:none;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:22px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.logo-mark{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.nav-links{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.nav-links button{
+  border:0;
+  background:transparent;
+  padding:10px 13px;
+  border-radius:10px;
+  color:#555b70;
+}
+
+.nav-links button:hover,
+.nav-links button.active{
+  background:#eef0ff;
+  color:var(--primary);
+}
+
+.coin-pill{
+  border:1px solid #dddfff;
+  background:#f4f4ff;
+  color:var(--primary);
+  padding:9px 13px;
+  border-radius:999px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+main{
+  max-width:1180px;
+  margin:auto;
+  padding:35px 20px 80px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.hero{
+  min-height:560px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:50px;
+  align-items:center;
+  position:relative;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:rgba(91,92,240,.12);
+  filter:blur(100px);
+  border-radius:50%;
+  left:-120px;
+  top:-80px;
+  z-index:-1;
+}
+
+.badge{
+  display:inline-flex;
+  padding:8px 13px;
+  border-radius:999px;
+  background:#eeefff;
+  color:var(--primary);
+  font-weight:700;
+  font-size:13px;
+}
+
+h1{
+  font-size:clamp(42px,6vw,72px);
+  line-height:1;
+  letter-spacing:-3px;
+  margin:18px 0;
+}
+
+h2{
+  font-size:34px;
+  letter-spacing:-1px;
+}
+
+h3{margin-top:0}
+
+.hero p{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.7;
+  max-width:650px;
+}
+
+.primary{
+  border:0;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  padding:14px 21px;
+  border-radius:12px;
+  font-weight:800;
+  box-shadow:0 8px 25px rgba(91,92,240,.22);
+}
+
+.secondary{
+  border:1px solid var(--border);
+  color:var(--text);
+  background:white;
+  padding:13px 20px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px;
+}
+
+.preview{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:25px;
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+
+.preview-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.fake-line{
+  height:11px;
+  border-radius:20px;
+  background:#eceefa;
+  margin:13px 0;
+}
+
+.fake-line.short{width:45%}
+.fake-line.medium{width:70%}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 7px 25px rgba(20,25,60,.04);
+}
+
+.tool-icon{
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#eef0ff;
+  font-size:21px;
+  margin-bottom:16px;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.price{
+  font-size:27px;
+  font-weight:800;
+  margin:12px 0;
+}
+
+.muted{color:var(--muted)}
+
+.form-card{
+  max-width:720px;
+  margin:30px auto;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:30px;
+  box-shadow:var(--shadow);
+}
+
+.progress{
+  height:7px;
+  border-radius:20px;
+  background:#e9eaf2;
+  overflow:hidden;
+  margin:15px 0 28px;
+}
+
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,var(--primary),var(--primary2));
+  transition:.25s;
+}
+
+.question-number{
+  color:var(--primary);
+  font-weight:800;
+  font-size:14px;
+}
+
+.question-title{
+  font-size:29px;
+  margin:12px 0 20px;
+}
+
+.question-help{
+  color:var(--muted);
+  margin-bottom:18px;
+}
+
+.field{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:14px;
+  outline:none;
+  background:#fff;
+  resize:vertical;
+}
+
+.field:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(91,92,240,.1);
+}
+
+textarea.field{
+  min-height:130px;
+}
+
+.choice-grid{
+  display:grid;
+  gap:12px;
+}
+
+.choice-btn{
+  width:100%;
+  text-align:left;
+  padding:16px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:13px;
+  transition:.15s;
+  font-weight:700;
+}
+
+.choice-btn:hover{
+  border-color:var(--primary);
+  background:#f7f7ff;
+}
+
+.choice-btn.selected{
+  border-color:var(--primary);
+  background:#eef0ff;
+  color:var(--primary);
+  box-shadow:0 0 0 2px rgba(91,92,240,.1);
+}
+
+.optional{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:500;
+}
+
+.result{
+  max-width:850px;
+  margin:30px auto;
+}
+
+.result-paper{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:35px;
+  box-shadow:var(--shadow);
+}
+
+.result-paper h1{
+  font-size:38px;
+  letter-spacing:-1px;
+  margin:0 0 8px;
+}
+
+.result-paper h2{
+  font-size:18px;
+  color:var(--primary);
+  margin-top:28px;
+  margin-bottom:10px;
+}
+
+.result-paper p{
+  line-height:1.65;
+}
+
+.result-paper ul{
+  line-height:1.7;
+}
+
+.contact{
+  color:var(--muted);
+  line-height:1.6;
+  margin:20px 0;
+}
+
+.schedule-row{
+  display:grid;
+  grid-template-columns:120px 130px 1fr 100px;
+  gap:10px;
+  padding:12px;
+  border-bottom:1px solid var(--border);
+}
+
+.loading{
+  text-align:center;
+  padding:70px 20px;
+}
+
+.spinner{
+  width:45px;
+  height:45px;
+  border:4px solid #e7e8f1;
+  border-top-color:var(--primary);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 20px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(15,18,35,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-bg.show{display:flex}
+
+.modal{
+  background:white;
+  max-width:520px;
+  width:100%;
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 25px 80px rgba(0,0,0,.2);
+}
+
+.cookie{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  right:20px;
+  max-width:760px;
+  margin:auto;
+  z-index:90;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 15px 50px rgba(0,0,0,.15);
+}
+
+.account-box{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin:25px 0;
+}
+
+.stat{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:22px;
+}
+
+.stat strong{
+  display:block;
+  font-size:30px;
+  margin-top:7px;
+}
+
+.notice{
+  padding:14px;
+  border-radius:12px;
+  background:#f0f1ff;
+  color:#5054b8;
+  margin:15px 0;
+}
+
+.error{
+  padding:14px;
+  border-radius:12px;
+  background:#fff0f0;
+  color:var(--danger);
+  margin-top:15px;
+}
+
+.success{
+  padding:14px;
+  border-radius:12px;
+  background:#effaf2;
+  color:var(--success);
+  margin-top:15px;
+}
+
+.shop-card{
+  display:flex;
+  flex-direction:column;
+}
+
+.shop-card .primary{
+  margin-top:auto;
+}
+
+@media(max-width:850px){
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  .account-box{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  main{
+    padding:25px 14px 60px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    letter-spacing:-2px;
+  }
+
+  .form-card{
+    padding:20px;
+  }
+
+  .result-paper{
+    padding:22px;
+  }
+
+  .schedule-row{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <button class="logo" onclick="showPage('home')">
+      <span class="logo-mark">F</span>
+      <span>Forma</span>
+    </button>
+
+    <nav class="nav-links">
+      <button data-page="home" onclick="showPage('home')">Accueil</button>
+      <button data-page="tools" onclick="showPage('tools')">Outils</button>
+      <button data-page="shop" onclick="showPage('shop')">Boutique</button>
+      <button data-page="plans" onclick="showPage('plans')">Abonnement</button>
+      <button data-page="account" onclick="showPage('account')">Mon compte</button>
+    </nav>
+
+    <div class="coin-pill">
+      🪙 <span id="coinBalance">1</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ACCUEIL -->
+<section id="page-home" class="page active">
+
+  <div class="hero">
+    <div>
+      <span class="badge">IA rédactionnelle</span>
+
+      <h1>Tu réponds.<br>Forma crée.</h1>
+
+      <p>
+        Réponds simplement à quelques questions.
+        Forma transforme tes réponses en un résultat clair,
+        naturel, structuré et directement utilisable.
+      </p>
+
+      <div class="actions">
+        <button class="primary" onclick="showPage('tools')">
+          Commencer
+        </button>
+
+        <button class="secondary" onclick="showPage('plans')">
+          Découvrir Forma
+        </button>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="preview-top">
+        <strong>Ton résultat</strong>
+        <span>✨ IA</span>
+      </div>
+
+      <div class="fake-line medium"></div>
+      <div class="fake-line"></div>
+      <div class="fake-line short"></div>
+      <div class="fake-line"></div>
+      <div class="fake-line medium"></div>
+      <div class="fake-line short"></div>
+    </div>
+  </div>
+
+  <h2>Pourquoi Forma ?</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Simple</h3>
+      <p>Une question à la fois pour rendre la création rapide et facile.</p>
+    </div>
+
+    <div class="card">
+      <h3>Intelligent</h3>
+      <p>L'IA comprend tes réponses et ne se contente pas de corriger les fautes.</p>
+    </div>
+
+    <div class="card">
+      <h3>Directement utilisable</h3>
+      <p>Le résultat est reformulé et organisé pour pouvoir être utilisé immédiatement.</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- OUTILS -->
+<section id="page-tools" class="page">
+
+  <h2>Les outils Forma</h2>
+  <p class="muted">Choisis ce que tu veux créer.</p>
+
+  <div id="toolsGrid" class="grid"></div>
+
+</section>
+
+
+<!-- GENERATEUR -->
+<section id="page-generator" class="page">
+
+  <div id="generatorContainer"></div>
+
+</section>
+
+
+<!-- BOUTIQUE -->
+<section id="page-shop" class="page">
+
+  <h2>Boutique</h2>
+  <p class="muted">Achète des Coins pour utiliser les générateurs.</p>
+
+  <div class="notice">
+    Mode démo — les achats sont actuellement gratuits.
+  </div>
+
+  <div id="shopGrid" class="grid"></div>
+
+</section>
+
+
+<!-- ABONNEMENTS -->
+<section id="page-plans" class="page">
+
+  <h2>Abonnement</h2>
+  <p class="muted">Choisis le fonctionnement qui te convient.</p>
+
+  <div id="plansGrid" class="grid"></div>
+
+</section>
+
+
+<!-- COMPTE -->
+<section id="page-account" class="page">
+
+  <h2>Mon compte</h2>
+
+  <div class="account-box">
+
+    <div class="stat">
+      <span class="muted">Coins disponibles</span>
+      <strong id="accountCoins">1</strong>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Coins quotidiens</span>
+      <strong id="accountDaily">1</strong>
+    </div>
+
+    <div class="stat">
+      <span class="muted">Coins achetés</span>
+      <strong id="accountPurchased">0</strong>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h3>Abonnement</h3>
+    <p id="accountPlan">Gratuit</p>
+    <p id="nextRecharge" class="muted"></p>
+  </div>
+
+  <br>
+
+  <div class="card">
+    <h3>Historique</h3>
+    <div id="accountHistory"></div>
+  </div>
+
+</section>
+
+
+<!-- CONFIDENTIALITE -->
+<section id="page-privacy" class="page">
+
+  <h2>Politique de confidentialité</h2>
+
+  <div class="card">
+
+    <h3>Données utilisées</h3>
+    <p>
+      Forma utilise les informations que tu renseignes dans les questionnaires
+      afin de générer le résultat demandé.
+    </p>
+
+    <h3>Génération IA</h3>
+    <p>
+      Lors d'une génération, les réponses sont envoyées au serveur Forma
+      afin d'utiliser le service d'intelligence artificielle configuré sur celui-ci.
+    </p>
+
+    <h3>Compte</h3>
+    <p>
+      Dans cette version de démonstration, les informations du compte,
+      les Coins, les préférences et l'historique des achats sont conservés
+      localement dans le navigateur.
+    </p>
+
+    <h3>Historique des générations</h3>
+    <p>
+      Forma ne conserve pas d'historique des générations dans cette version.
+    </p>
+
+    <h3>Suppression</h3>
+    <p>
+      Tu peux supprimer les données locales de Forma en réinitialisant
+      les données du compte depuis ce navigateur.
+    </p>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- MODAL ZERO COINS -->
+<div id="coinModal" class="modal-bg">
+  <div class="modal">
+    <h2>Tu n'as plus de Coins</h2>
+    <p class="muted">
+      Utilise un abonnement ou achète des Coins pour continuer.
+    </p>
+
+    <div class="actions">
+      <button class="primary" onclick="closeModal();showPage('plans')">
+        Voir les abonnements
+      </button>
+
+      <button class="secondary" onclick="closeModal();showPage('shop')">
+        Acheter des Coins
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL FEEDBACK -->
+<div id="feedbackModal" class="modal-bg">
+  <div class="modal">
+    <h2>Merci pour ton retour</h2>
+    <p class="muted">
+      Ton avis a été enregistré.
+    </p>
+
+    <button class="primary" onclick="closeFeedback()">
+      Fermer
+    </button>
+  </div>
+</div>
+
+
+<!-- COOKIES -->
+<div id="cookieBanner" class="cookie hidden">
+
+  <strong>Bienvenue sur Forma</strong>
+
+  <p class="muted">
+    Forma utilise le stockage local nécessaire au fonctionnement du compte
+    et de tes préférences. Aucun outil d'analyse optionnel n'est activé
+    dans cette version.
+  </p>
+
+  <div class="actions">
+    <button class="primary" onclick="acceptCookies()">Accepter</button>
+    <button class="secondary" onclick="refuseCookies()">Refuser</button>
+    <button class="secondary" onclick="customizeCookies()">Personnaliser</button>
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   COMPTE
+========================================================= */
+
+const STORAGE_KEY = "forma_account_v6";
+
+const defaultAccount = {
+  id: Math.random().toString(36).slice(2,8),
+  dailyCoins: 1,
+  purchasedCoins: 0,
+  plan: "Gratuit",
+  nextRechargeAt: Date.now() + 86400000,
+  history: [],
+  feedback: [],
+  privacyAccepted: false,
+  cookiesChoice: null
+};
+
+let account = loadAccount();
+
+function loadAccount(){
+
+  try{
+
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+    if(saved){
+
+      return {
+        ...defaultAccount,
+        ...saved,
+        dailyCoins: Number(saved.dailyCoins ?? 1),
+        purchasedCoins: Number(saved.purchasedCoins ?? 0),
+        history: Array.isArray(saved.history) ? saved.history : [],
+        feedback: Array.isArray(saved.feedback) ? saved.feedback : []
+      };
+
+    }
+
+  }catch(error){
+    console.error(error);
+  }
+
+  return {...defaultAccount};
+}
+
+function saveAccount(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(account));
+  updateUI();
+}
+
+function totalCoins(){
+
+  if(account.plan === "Pro"){
+    return Infinity;
+  }
+
+  return Math.max(0, account.dailyCoins) +
+         Math.max(0, account.purchasedCoins);
+}
+
+function updateUI(){
+
+  const total = totalCoins();
+
+  document.getElementById("coinBalance").textContent =
+    total === Infinity ? "∞" : total;
+
+  document.getElementById("accountCoins").textContent =
+    total === Infinity ? "∞" : total;
+
+  document.getElementById("accountDaily").textContent =
+    account.plan === "Pro" ? "∞" : account.dailyCoins;
+
+  document.getElementById("accountPurchased").textContent =
+    account.purchasedCoins;
+
+  document.getElementById("accountPlan").textContent =
+    account.plan;
+
+  document.getElementById("nextRecharge").textContent =
+    account.plan === "Pro"
+      ? "Générations illimitées"
+      : "Prochaine recharge : " + formatDate(account.nextRechargeAt);
+
+  renderHistory();
+}
+
+
+/* =========================================================
+   RECHARGE
+========================================================= */
+
+function checkRecharge(){
+
+  if(account.plan === "Pro"){
+    return;
+  }
+
+  if(Date.now() < account.nextRechargeAt){
+    return;
+  }
+
+  if(account.plan === "Plus"){
+
+    account.dailyCoins = 10;
+
+  }else{
+
+    account.dailyCoins = 1;
+
+  }
+
+  account.nextRechargeAt = Date.now() + 86400000;
+
+  saveAccount();
+}
+
+setInterval(checkRecharge, 30000);
+checkRecharge();
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(name){
+
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById("page-" + name);
+
+  if(page){
+    page.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-links button").forEach(btn=>{
+    btn.classList.toggle(
+      "active",
+      btn.dataset.page === name
+    );
+  });
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  if(name === "account"){
+    updateUI();
+  }
+}
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+const TOOLS = {
+
+  cv:{
+    id:"cv",
+    icon:"📄",
+    name:"Créateur de CV",
+    description:"Crée un CV professionnel à partir de tes informations.",
+    questions:[
+      {
+        key:"prenom",
+        label:"Quel est ton prénom ?",
+        type:"text",
+        required:true
+      },
+      {
+        key:"nom",
+        label:"Quel est ton nom ?",
+        type:"text",
+        required:true
+      },
+      {
+        key:"email",
+        label:"Quelle est ton adresse e-mail ?",
+        type:"email",
+        required:false
+      },
+      {
+        key:"telephone",
+        label:"Quel est ton numéro de téléphone ?",
+        type:"tel",
+        required:false
+      },
+      {
+        key:"ville",
+        label:"Dans quelle ville habites-tu ?",
+        type:"text",
+        optional:true
+      },
+      {
+        key:"adresse",
+        label:"Quelle est ton adresse ?",
+        type:"text",
+        optional:true
+      },
+      {
+        key:"codePostal",
+        label:"Quel est ton code postal ?",
+        type:"text",
+        optional:true
+      },
+      {
+        key:"dateNaissance",
+        label:"Quelle est ta date de naissance ?",
+        type:"date",
+        optional:true
+      },
+      {
+        key:"statut",
+        label:"Quel est ton statut actuel ?",
+        type:"text",
+        optional:true,
+        placeholder:"Exemple : Élève de 3e"
+      },
+      {
+        key:"experience",
+        label:"As-tu déjà eu une expérience professionnelle ?",
+        type:"choice",
+        choices:["Oui","Non"]
+      },
+      {
+        key:"experienceLieu",
+        label:"Où as-tu fait cette expérience ?",
+        type:"text"
+      },
+      {
+        key:"experienceRole",
+        label:"Quel était ton rôle ?",
+        type:"text"
+      },
+      {
+        key:"experienceTaches",
+        label:"Qu'as-tu fait pendant cette expérience ?",
+        type:"textarea"
+      },
+      {
+        key:"experienceQuand",
+        label:"Quand as-tu fait cette expérience ?",
+        type:"text"
+      },
+      {
+        key:"experienceDuree",
+        label:"Combien de temps a-t-elle duré ?",
+        type:"text"
+      },
+      {
+        key:"formation",
+        label:"Quelle formation ou quel niveau d'études veux-tu indiquer ?",
+        type:"textarea",
+        optional:true
+      },
+      {
+        key:"competences",
+        label:"Quelles compétences veux-tu indiquer ?",
+        type:"textarea",
+        optional:true
+      },
+      {
+        key:"qualites",
+        label:"Quelles sont tes qualités ?",
+        type:"textarea",
+        optional:true
+      },
+      {
+        key:"interets",
+        label:"Quels sont tes centres d'intérêt ?",
+        type:"textarea",
+        optional:true
+      },
+      {
+        key:"objectif",
+        label:"Quel objectif souhaites-tu mettre sur ton CV ?",
+        type:"textarea",
+        optional:true
+      }
+    ]
+  },
+
+  lettre:{
+    id:"lettre",
+    icon:"✉️",
+    name:"Lettre de motivation",
+    description:"Transforme tes réponses en lettre de motivation naturelle.",
+    questions:[
+      {key:"prenom",label:"Quel est ton prénom ?",type:"text"},
+      {key:"nom",label:"Quel est ton nom ?",type:"text"},
+      {key:"destinataire",label:"À qui est destinée la lettre ?",type:"text",optional:true},
+      {key:"poste",label:"Pour quel poste ou quelle formation ?",type:"text"},
+      {key:"etablissement",label:"Quel est l'établissement ou l'entreprise ?",type:"text",optional:true},
+      {key:"motivation",label:"Pourquoi veux-tu cette place ?",type:"textarea"},
+      {key:"experience",label:"Quelles expériences ou connaissances sont pertinentes ?",type:"textarea",optional:true},
+      {key:"qualites",label:"Quelles qualités veux-tu mettre en avant ?",type:"textarea",optional:true},
+      {key:"apprendre",label:"Qu'aimerais-tu apprendre ou découvrir ?",type:"textarea",optional:true}
+    ]
+  },
+
+  presentation:{
+    id:"presentation",
+    icon:"👤",
+    name:"Présentation personnelle",
+    description:"Crée une présentation claire et naturelle.",
+    questions:[
+      {key:"prenom",label:"Quel est ton prénom ?",type:"text"},
+      {key:"nom",label:"Quel est ton nom ?",type:"text",optional:true},
+      {key:"statut",label:"Comment te décrirais-tu actuellement ?",type:"text"},
+      {key:"etudes",label:"Que fais-tu comme études ou activité ?",type:"textarea",optional:true},
+      {key:"interets",label:"Quels sont tes centres d'intérêt ?",type:"textarea",optional:true},
+      {key:"qualites",label:"Quelles sont tes principales qualités ?",type:"textarea",optional:true},
+      {key:"projet",label:"Quel est ton projet ou ton objectif ?",type:"textarea",optional:true}
+    ]
+  },
+
+  message:{
+    id:"message",
+    icon:"💬",
+    name:"Générateur de messages",
+    description:"Crée un message adapté au contexte et au ton choisi.",
+    questions:[
+      {
+        key:"type",
+        label:"Quel type de message veux-tu créer ?",
+        type:"choice",
+        choices:[
+          "Demander une information",
+          "Prévenir d’une absence",
+          "Demander quelque chose",
+          "Répondre à quelqu’un",
+          "Remercier quelqu’un",
+          "Message professionnel",
+          "Autre"
+        ]
+      },
+      {key:"personne",label:"Quel est le prénom de la personne ?",type:"text",optional:true},
+      {key:"message",label:"Qu'est-ce que tu veux dire ?",type:"textarea"},
+      {key:"contexte",label:"Quel est le contexte ?",type:"textarea",optional:true},
+      {key:"detail",label:"Y a-t-il un détail important à ajouter ?",type:"textarea",optional:true},
+      {
+        key:"ton",
+        label:"Quel ton veux-tu utiliser ?",
+        type:"choice",
+        choices:[
+          "Simple",
+          "Poli",
+          "Professionnel",
+          "Amical",
+          "Formel"
+        ]
+      },
+      {key:"prenomUtilisateur",label:"Ton prénom ?",type:"text",optional:true},
+      {key:"nomUtilisateur",label:"Ton nom ?",type:"text",optional:true}
+    ]
+  },
+
+  objectifs:{
+    id:"objectifs",
+    icon:"🎯",
+    name:"Générateur d'objectifs",
+    description:"Transforme tes idées en objectifs clairs.",
+    questions:[
+      {key:"objectifPrincipal",label:"Quel est ton objectif principal ?",type:"textarea"},
+      {key:"raisons",label:"Pourquoi veux-tu atteindre cet objectif ?",type:"textarea",optional:true},
+      {key:"actions",label:"Qu'aimerais-tu faire pour y arriver ?",type:"textarea",optional:true},
+      {key:"echeance",label:"As-tu une échéance ?",type:"text",optional:true},
+      {key:"contraintes",label:"As-tu des contraintes particulières ?",type:"textarea",optional:true}
+    ]
+  },
+
+  motivation:{
+    id:"motivation",
+    icon:"🔥",
+    name:"Générateur de motivation",
+    description:"Crée un texte de motivation personnalisé.",
+    questions:[
+      {key:"situation",label:"Dans quelle situation es-tu actuellement ?",type:"textarea"},
+      {key:"objectif",label:"Qu'est-ce que tu veux atteindre ?",type:"textarea"},
+      {key:"difficulte",label:"Qu'est-ce qui te bloque ou te décourage ?",type:"textarea",optional:true},
+      {key:"raison",label:"Pourquoi cet objectif est important pour toi ?",type:"textarea",optional:true},
+      {key:"style",label:"Quel style veux-tu ?",type:"choice",choices:["Court","Normal","Développé"]}
+    ]
+  },
+
+  planning:{
+    id:"planning",
+    icon:"📅",
+    name:"Générateur de planning",
+    description:"Organise tes tâches, contraintes et objectifs.",
+    questions:[
+      {key:"periode",label:"Pour quelle période veux-tu ton planning ?",type:"text"},
+      {key:"horaires",label:"Quels sont tes horaires disponibles ?",type:"textarea"},
+      {key:"taches",label:"Quelles tâches dois-tu faire ?",type:"textarea"},
+      {key:"priorites",label:"Quelles sont tes priorités ?",type:"textarea",optional:true},
+      {key:"contraintes",label:"Quelles contraintes dois-tu respecter ?",type:"textarea",optional:true},
+      {key:"objectifs",label:"Quels objectifs veux-tu atteindre ?",type:"textarea",optional:true}
+    ]
+  }
+
+};
+
+
+/* =========================================================
+   AFFICHAGE DES OUTILS
+========================================================= */
+
+function renderTools(){
+
+  const container = document.getElementById("toolsGrid");
+
+  container.innerHTML = "";
+
+  Object.values(TOOLS).forEach(tool=>{
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="tool-icon">${tool.icon}</div>
+
+      <h3>${escapeHTML(tool.name)}</h3>
+
+      <p>${escapeHTML(tool.description)}</p>
+
+      <div class="price">1 Coin</div>
+
+      <button class="primary" style="width:100%"
+        onclick="startGenerator('${tool.id}')">
+        Utiliser
+      </button>
+    `;
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+/* =========================================================
+   GENERATEUR
+========================================================= */
+
+let currentTool = null;
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let answers = {};
+let generationResult = null;
+
+function startGenerator(toolId){
+
+  checkRecharge();
+
+  if(account.plan !== "Pro" && totalCoins() < 1){
+
+    openCoinModal();
+    return;
+  }
+
+  currentTool = TOOLS[toolId];
+
+  if(!currentTool){
+    return;
+  }
+
+  answers = {};
+  currentQuestionIndex = 0;
+
+  buildQuestions();
+
+  showPage("generator");
+
+  renderQuestion();
+
+}
+
+
+function buildQuestions(){
+
+  currentQuestions = currentTool.questions.filter(question=>{
+
+    /*
+      Les questions d'expérience du CV sont uniquement affichées
+      si l'utilisateur répond "Oui".
+    */
+
+    if(
+      currentTool.id === "cv" &&
+      question.key.startsWith("experience") &&
+      question.key !== "experience"
+    ){
+
+      return answers.experience === "Oui";
+
+    }
+
+    return true;
+
+  });
+
+}
+
+
+/* =========================================================
+   QUESTIONNAIRE
+========================================================= */
+
+function renderQuestion(){
+
+  const container = document.getElementById("generatorContainer");
+
+  if(currentQuestionIndex >= currentQuestions.length){
+
+    generateResult();
+
+    return;
+  }
+
+  const question = currentQuestions[currentQuestionIndex];
+
+  const total = currentQuestions.length;
+
+  const percent =
+    Math.round(
+      ((currentQuestionIndex) / total) * 100
+    );
+
+  container.innerHTML = `
+
+    <div class="form-card">
+
+      <div class="question-number">
+        Question ${currentQuestionIndex + 1} sur ${total}
+      </div>
+
+      <div class="progress">
+        <div
+          class="progress-bar"
+          style="width:${Math.max(percent,5)}%"
+        ></div>
+      </div>
+
+      <div class="question-title">
+        ${escapeHTML(question.label)}
+        ${
+          question.optional
+          ? `<span class="optional"> — Facultatif</span>`
+          : ""
+        }
+      </div>
+
+      ${
+        question.optional
+        ? `<div class="question-help">Tu peux laisser cette question vide.</div>`
+        : ""
+      }
+
+      <div id="questionInput"></div>
+
+      <div id="questionError"></div>
+
+      <div class="actions">
+
+        ${
+          currentQuestionIndex > 0
+          ? `<button class="secondary" id="backBtn">
+              Retour
+            </button>`
+          : ""
+        }
+
+        <button class="primary" id="nextBtn">
+          ${
+            currentQuestionIndex === total - 1
+            ? "Générer"
+            : "Suivant"
+          }
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+  renderQuestionInput(question);
+
+  const nextBtn = document.getElementById("nextBtn");
+
+  nextBtn.addEventListener("click", nextQuestion);
+
+  const backBtn = document.getElementById("backBtn");
+
+  if(backBtn){
+    backBtn.addEventListener("click", previousQuestion);
+  }
+
+}
+
+
+/* =========================================================
+   INPUT QUESTION
+========================================================= */
+
+function renderQuestionInput(question){
+
+  const container = document.getElementById("questionInput");
+
+  /*
+    CHOIX
+    IMPORTANT :
+    les boutons sont créés ici et reçoivent directement
+    leur event listener.
+  */
+
+  if(question.type === "choice"){
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "choice-grid";
+
+    question.choices.forEach(choice=>{
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "choice-btn";
+      button.textContent = choice;
+
+      if(answers[question.key] === choice){
+        button.classList.add("selected");
+      }
+
+      button.addEventListener("click", ()=>{
+
+        answers[question.key] = choice;
+
+        wrapper
+          .querySelectorAll(".choice-btn")
+          .forEach(btn=>{
+            btn.classList.remove("selected");
+          });
+
+        button.classList.add("selected");
+
+        /*
+          Pour les questions de choix, on ne génère pas
+          automatiquement : l'utilisateur clique ensuite
+          sur "Suivant".
+        */
+
+      });
+
+      wrapper.appendChild(button);
+
+    });
+
+    container.appendChild(wrapper);
+
+    return;
+  }
+
+
+  const input =
+    question.type === "textarea"
+      ? document.createElement("textarea")
+      : document.createElement("input");
+
+  input.className = "field";
+
+  input.type =
+    question.type === "textarea"
+      ? ""
+      : question.type;
+
+  input.placeholder =
+    question.placeholder || "";
+
+  input.value =
+    answers[question.key] || "";
+
+  input.addEventListener("input", ()=>{
+
+    answers[question.key] = input.value;
+
+  });
+
+  container.appendChild(input);
+
+  setTimeout(()=>{
+    input.focus();
+  },50);
+
+}
+
+
+/* =========================================================
+   QUESTION SUIVANTE
+========================================================= */
+
+function nextQuestion(){
+
+  const question = currentQuestions[currentQuestionIndex];
+
+  /*
+    Pour les champs classiques, récupérer la valeur
+    directement depuis le DOM.
+  */
+
+  const field =
+    document.querySelector("#questionInput .field");
+
+  if(field){
+    answers[question.key] = field.value.trim();
+  }
+
+  /*
+    Validation des champs obligatoires.
+  */
+
+  if(
+    !question.optional &&
+    !answers[question.key]
+  ){
+
+    showQuestionError(
+      "Réponds à cette question pour continuer."
+    );
+
+    return;
+  }
+
+
+  /*
+    VALIDATION EMAIL / TELEPHONE POUR CV
+    Au moins l'un des deux doit être renseigné.
+  */
+
+  if(currentTool.id === "cv"){
+
+    if(
+      question.key === "telephone" &&
+      !answers.email &&
+      !answers.telephone
+    ){
+
+      showQuestionError(
+        "Indique au moins une adresse e-mail ou un numéro de téléphone."
+      );
+
+      return;
+    }
+
+    if(
+      question.key === "email" &&
+      !answers.email &&
+      !answers.telephone
+    ){
+
+      showQuestionError(
+        "Indique au moins une adresse e-mail ou un numéro de téléphone."
+      );
+
+      return;
+    }
+
+  }
+
+
+  /*
+    Si on vient de répondre à la question expérience,
+    reconstruire la liste des questions.
+
+    Oui => les questions d'expérience apparaissent.
+    Non => elles sont supprimées.
+  */
+
+  if(
+    currentTool.id === "cv" &&
+    question.key === "experience"
+  ){
+
+    buildQuestions();
+
+  }
+
+
+  currentQuestionIndex++;
+
+  renderQuestion();
+
+}
+
+
+function previousQuestion(){
+
+  /*
+    Sauvegarde de la valeur actuelle avant retour.
+  */
+
+  const question = currentQuestions[currentQuestionIndex];
+
+  const field =
+    document.querySelector("#questionInput .field");
+
+  if(field){
+    answers[question.key] = field.value.trim();
+  }
+
+  currentQuestionIndex--;
+
+  if(currentQuestionIndex < 0){
+    currentQuestionIndex = 0;
+  }
+
+  buildQuestions();
+
+  renderQuestion();
+
+}
+
+
+function showQuestionError(message){
+
+  const box = document.getElementById("questionError");
+
+  if(box){
+
+    box.innerHTML = `
+      <div class="error">
+        ${escapeHTML(message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   GENERATION IA
+========================================================= */
+
+async function generateResult(){
+
+  const container =
+    document.getElementById("generatorContainer");
+
+  /*
+    Dernière sécurité CV :
+    email OU téléphone obligatoire.
+  */
+
+  if(currentTool.id === "cv"){
+
+    if(
+      !answers.email &&
+      !answers.telephone
+    ){
+
+      currentQuestionIndex =
+        currentQuestions.findIndex(
+          q=>q.key === "email"
+        );
+
+      if(currentQuestionIndex < 0){
+        currentQuestionIndex = 0;
+      }
+
+      renderQuestion();
+
+      showQuestionError(
+        "Indique au moins un e-mail ou un numéro de téléphone."
+      );
+
+      return;
+    }
+
+  }
+
+
+  /*
+    Le dernier clic de génération consomme le Coin
+    UNIQUEMENT si l'appel IA peut être lancé.
+  */
+
+  container.innerHTML = `
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      <h2>Génération en cours...</h2>
+
+      <p class="muted">
+        Forma analyse tes réponses et crée ton résultat.
+      </p>
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const response = await fetch("/api/generate",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+        tool:currentTool.id,
+
+        answers:answers
+
+      })
+
+    });
+
+
+    const data = await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "La génération a échoué."
+      );
+
+    }
+
+
+    /*
+      Le serveur renvoie :
+      {
+        ok:true,
+        result:{...}
+      }
+
+      On récupère bien .result pour éviter [object Object].
+    */
+
+    generationResult = data.result;
+
+
+    if(
+      !generationResult ||
+      typeof generationResult !== "object"
+    ){
+
+      throw new Error(
+        "Le résultat de l'IA est invalide."
+      );
+
+    }
+
+
+    /*
+      Le Coin n'est consommé qu'après une génération réussie.
+    */
+
+    spendCoin();
+
+
+    renderResult(generationResult);
+
+  }catch(error){
+
+    console.error(error);
+
+    container.innerHTML = `
+
+      <div class="form-card">
+
+        <h2>Impossible de générer le résultat</h2>
+
+        <div class="error">
+          ${escapeHTML(error.message)}
+        </div>
+
+        <div class="actions">
+
+          <button class="secondary"
+            onclick="showPage('tools')">
+            Retour aux outils
+          </button>
+
+          <button class="primary"
+            onclick="startGenerator('${currentTool.id}')">
+            Réessayer
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   COINS
+========================================================= */
+
+function spendCoin(){
+
+  if(account.plan === "Pro"){
+    return;
+  }
+
+  /*
+    Les Coins quotidiens sont dépensés avant
+    les Coins achetés.
+  */
+
+  if(account.dailyCoins > 0){
+
+    account.dailyCoins--;
+
+  }else if(account.purchasedCoins > 0){
+
+    account.purchasedCoins--;
+
+  }else{
+
+    openCoinModal();
+
+    return;
+
+  }
+
+  saveAccount();
+
+}
+
+
+function addPurchasedCoins(amount){
+
+  account.purchasedCoins += Number(amount);
+
+  account.history.unshift({
+
+    type:"Achat de Coins",
+
+    label:`+${amount} Coins`,
+
+    date:Date.now()
+
+  });
+
+  saveAccount();
+
+}
+
+
+/* =========================================================
+   RESULTAT
+========================================================= */
+
+function renderResult(result){
+
+  const container =
+    document.getElementById("generatorContainer");
+
+  let html = `
+    <div class="result">
+
+      <div class="result-paper">
+  `;
+
+
+  if(result.title){
+
+    html += `
+      <h1>${escapeHTML(result.title)}</h1>
+    `;
+
+  }
+
+
+  if(result.subtitle){
+
+    html += `
+      <p class="muted">
+        ${escapeHTML(result.subtitle)}
+      </p>
+    `;
+
+  }
+
+
+  if(
+    Array.isArray(result.contact) &&
+    result.contact.length
+  ){
+
+    html += `<div class="contact">`;
+
+    result.contact.forEach(item=>{
+
+      html += `
+        <div>${escapeHTML(item)}</div>
+      `;
+
+    });
+
+    html += `</div>`;
+
+  }
+
+
+  if(result.subject){
+
+    html += `
+      <h2>Objet</h2>
+      <p><strong>${escapeHTML(result.subject)}</strong></p>
+    `;
+
+  }
+
+
+  if(result.greeting){
+
+    html += `
+      <p>${escapeHTML(result.greeting)}</p>
+    `;
+
+  }
+
+
+  /*
+    SECTIONS
+  */
+
+  if(
+    Array.isArray(result.sections)
+  ){
+
+    result.sections.forEach(section=>{
+
+      if(!section) return;
+
+      if(section.heading){
+
+        html += `
+          <h2>${escapeHTML(section.heading)}</h2>
+        `;
+
+      }
+
+
+      if(
+        Array.isArray(section.paragraphs)
+      ){
+
+        section.paragraphs.forEach(paragraph=>{
+
+          if(paragraph){
+
+            html += `
+              <p>${escapeHTML(paragraph)}</p>
+            `;
+
+          }
+
+        });
+
+      }
+
+
+      if(
+        Array.isArray(section.bullets) &&
+        section.bullets.length
+      ){
+
+        html += `<ul>`;
+
+        section.bullets.forEach(bullet=>{
+
+          if(bullet){
+
+            html += `
+              <li>${escapeHTML(bullet)}</li>
+            `;
+
+          }
+
+        });
+
+        html += `</ul>`;
+
+      }
+
+    });
+
+  }
+
+
+  /*
+    PLANNING
+  */
+
+  if(
+    Array.isArray(result.schedule) &&
+    result.schedule.length
+  ){
+
+    html += `
+      <h2>Planning</h2>
+      <div>
+    `;
+
+    result.schedule.forEach(row=>{
+
+      html += `
+        <div class="schedule-row">
+
+          <strong>${escapeHTML(row.day || "")}</strong>
+
+          <span>${escapeHTML(row.time || "")}</span>
+
+          <span>${escapeHTML(row.task || "")}</span>
+
+          <span>${escapeHTML(row.priority || "")}</span>
+
+        </div>
+      `;
+
+    });
+
+    html += `</div>`;
+
+  }
+
+
+  if(result.closing){
+
+    html += `
+      <p>${escapeHTML(result.closing)}</p>
+    `;
+
+  }
+
+
+  if(result.signature){
+
+    html += `
+      <p><strong>${escapeHTML(result.signature)}</strong></p>
+    `;
+
+  }
+
+
+  html += `
+      </div>
+
+      <div class="actions">
+
+        <button class="primary"
+          onclick="copyResult()">
+          Copier
+        </button>
+
+        <button class="secondary"
+          onclick="modifyResult()">
+          Modifier
+        </button>
+
+      </div>
+
+      <div class="actions">
+
+        <button class="secondary"
+          onclick="sendFeedback('good')">
+          👍 Utile
+        </button>
+
+        <button class="secondary"
+          onclick="sendFeedback('bad')">
+          👎 Pas utile
+        </button>
+
+        <button class="secondary"
+          onclick="sendFeedback('report')">
+          Signaler
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+
+  container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   COPIER
+========================================================= */
+
+function resultToText(result){
+
+  const lines = [];
+
+
+  if(result.title){
+    lines.push(result.title);
+  }
+
+  if(result.subtitle){
+    lines.push(result.subtitle);
+  }
+
+  if(
+    Array.isArray(result.contact)
+  ){
+
+    result.contact.forEach(x=>{
+      if(x) lines.push(x);
+    });
+
+  }
+
+
+  if(result.subject){
+    lines.push("Objet : " + result.subject);
+  }
+
+  if(result.greeting){
+    lines.push(result.greeting);
+  }
+
+
+  if(Array.isArray(result.sections)){
+
+    result.sections.forEach(section=>{
+
+      if(section.heading){
+        lines.push(
+          "\n" + section.heading
+        );
+      }
+
+      if(Array.isArray(section.paragraphs)){
+
+        section.paragraphs.forEach(p=>{
+          if(p) lines.push(p);
+        });
+
+      }
+
+      if(Array.isArray(section.bullets)){
+
+        section.bullets.forEach(b=>{
+          if(b) lines.push("• " + b);
+        });
+
+      }
+
+    });
+
+  }
+
+
+  if(Array.isArray(result.schedule)){
+
+    lines.push("\nPlanning");
+
+    result.schedule.forEach(row=>{
+
+      lines.push(
+        `${row.day || ""} — ${row.time || ""} — ${row.task || ""} — ${row.priority || ""}`
+      );
+
+    });
+
+  }
+
+
+  if(result.closing){
+    lines.push(result.closing);
+  }
+
+  if(result.signature){
+    lines.push(result.signature);
+  }
+
+
+  return lines.join("\n");
+
+}
+
+
+async function copyResult(){
+
+  if(!generationResult){
+    return;
+  }
+
+  const text =
+    resultToText(generationResult);
+
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+    alert("Résultat copié.");
+
+  }catch(error){
+
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value = text;
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("Résultat copié.");
+
+  }
+
+}
+
+
+/* =========================================================
+   MODIFIER
+========================================================= */
+
+function modifyResult(){
+
+  /*
+    On garde les réponses.
+    On reconstruit le questionnaire.
+  */
+
+  currentQuestionIndex = 0;
+
+  buildQuestions();
+
+  renderQuestion();
+
+}
+
+
+/* =========================================================
+   BOUTIQUE
+========================================================= */
+
+const SHOP_PACKS = [
+
+  {coins:10,price:"0,99 €"},
+  {coins:20,price:"1,99 €"},
+  {coins:50,price:"4,99 €"},
+  {coins:100,price:"8,99 €"},
+  {coins:200,price:"15,99 €"}
+
+];
+
+
+function renderShop(){
+
+  const container =
+    document.getElementById("shopGrid");
+
+  container.innerHTML = "";
+
+  SHOP_PACKS.forEach(pack=>{
+
+    const card =
+      document.createElement("div");
+
+    card.className = "card shop-card";
+
+    card.innerHTML = `
+
+      <h3>${pack.coins} Coins</h3>
+
+      <p>
+        Ajoute ${pack.coins} Coins achetés
+        à ton compte.
+      </p>
+
+      <div class="price">
+        ${pack.price}
+      </div>
+
+      <button class="primary">
+        Acheter
+      </button>
+
+    `;
+
+    card
+      .querySelector("button")
+      .addEventListener("click",()=>{
+
+        /*
+          DEMO :
+          aucun paiement réel.
+        */
+
+        addPurchasedCoins(pack.coins);
+
+        alert(
+          `Mode démo : ${pack.coins} Coins ajoutés à ton compte.`
+        );
+
+      });
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+/* =========================================================
+   ABONNEMENTS
+========================================================= */
+
+const PLANS = [
+
+  {
+    id:"Gratuit",
+    price:"0 €",
+    description:"1 Coin toutes les 24 heures.",
+    button:"Utiliser"
+  },
+
+  {
+    id:"Plus",
+    price:"4,99 € / mois",
+    description:"10 Coins toutes les 24 heures.",
+    button:"Passer à Plus"
+  },
+
+  {
+    id:"Pro",
+    price:"9,99 € / mois",
+    description:"Générations illimitées.",
+    button:"Passer à Pro"
+  }
+
+];
+
+
+function renderPlans(){
+
+  const container =
+    document.getElementById("plansGrid");
+
+  container.innerHTML = "";
+
+  PLANS.forEach(plan=>{
+
+    const active =
+      account.plan === plan.id;
+
+    const card =
+      document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+
+      <h3>${plan.id}</h3>
+
+      <div class="price">
+        ${plan.price}
+      </div>
+
+      <p>
+        ${plan.description}
+      </p>
+
+      <button class="${active ? "secondary" : "primary"}"
+        ${active ? "disabled" : ""}>
+
+        ${active ? "Plan actuel" : plan.button}
+
+      </button>
+
+    `;
+
+
+    const button =
+      card.querySelector("button");
+
+
+    if(!active){
+
+      button.addEventListener("click",()=>{
+
+        activatePlan(plan.id);
+
+      });
+
+    }
+
+
+    container.appendChild(card);
+
+  });
+
+
+  /*
+    Bouton de désactivation
+  */
+
+  if(account.plan !== "Gratuit"){
+
+    const disableCard =
+      document.createElement("div");
+
+    disableCard.className = "card";
+
+    disableCard.innerHTML = `
+
+      <h3>Désactiver l'abonnement</h3>
+
+      <p>
+        Retourner au plan Gratuit.
+      </p>
+
+      <button class="secondary">
+        Désactiver
+      </button>
+
+    `;
+
+    disableCard
+      .querySelector("button")
+      .addEventListener(
+        "click",
+        ()=>activatePlan("Gratuit")
+      );
+
+    container.appendChild(disableCard);
+
+  }
+
+}
+
+
+function activatePlan(plan){
+
+  const oldPlan =
+    account.plan;
+
+  account.plan = plan;
+
+  if(plan === "Pro"){
+
+    account.dailyCoins = 0;
+
+  }else if(plan === "Plus"){
+
+    account.dailyCoins = 10;
+
+  }else{
+
+    account.dailyCoins = 1;
+
+  }
+
+  account.nextRechargeAt =
+    Date.now() + 86400000;
+
+
+  account.history.unshift({
+
+    type:"Changement d'abonnement",
+
+    label:`${oldPlan} → ${plan}`,
+
+    date:Date.now()
+
+  });
+
+
+  saveAccount();
+
+  renderPlans();
+
+  alert(
+    plan === "Gratuit"
+      ? "Abonnement désactivé."
+      : `Forma ${plan} activé en mode démo.`
+  );
+
+}
+
+
+/* =========================================================
+   HISTORIQUE
+========================================================= */
+
+function renderHistory(){
+
+  const container =
+    document.getElementById("accountHistory");
+
+  if(!account.history.length){
+
+    container.innerHTML =
+      `<p class="muted">Aucun achat ou changement d'abonnement.</p>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    account.history
+      .map(item=>`
+
+        <div style="
+          padding:13px 0;
+          border-bottom:1px solid var(--border);
+        ">
+
+          <strong>${escapeHTML(item.type)}</strong>
+
+          <div class="muted">
+            ${escapeHTML(item.label)}
+          </div>
+
+          <small class="muted">
+            ${formatDate(item.date)}
+          </small>
+
+        </div>
+
+      `)
+      .join("");
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+function sendFeedback(type){
+
+  account.feedback.push({
+
+    type,
+
+    tool:currentTool?.id || null,
+
+    date:Date.now()
+
+  });
+
+  saveAccount();
+
+  /*
+    Envoi optionnel au backend.
+    Si le serveur n'accepte pas, le feedback local
+    reste quand même enregistré.
+  */
+
+  fetch("/api/feedback",{
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify({
+      type,
+      tool:currentTool?.id || null
+    })
+
+  }).catch(()=>{});
+
+
+  document
+    .getElementById("feedbackModal")
+    .classList.add("show");
+
+}
+
+
+function closeFeedback(){
+
+  document
+    .getElementById("feedbackModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   ZERO COINS MODAL
+========================================================= */
+
+function openCoinModal(){
+
+  document
+    .getElementById("coinModal")
+    .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("coinModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   COOKIES
+========================================================= */
+
+function initPrivacy(){
+
+  /*
+    Première visite :
+    on demande l'acceptation de la politique.
+  */
+
+  if(!account.privacyAccepted){
+
+    showPrivacyFirstVisit();
+
+    return;
+
+  }
+
+
+  if(!account.cookiesChoice){
+
+    document
+      .getElementById("cookieBanner")
+      .classList.remove("hidden");
+
+  }
+
+}
+
+
+function showPrivacyFirstVisit(){
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.id = "privacyFirstVisit";
+
+  overlay.className = "modal-bg";
+
+  overlay.style.display = "flex";
+
+  overlay.innerHTML = `
+
+    <div class="modal">
+
+      <h2>Bienvenue sur Forma</h2>
+
+      <p>
+        Avant de commencer, lis la
+        <strong>Politique de confidentialité</strong>.
+      </p>
+
+      <label style="
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+        margin:20px 0;
+      ">
+
+        <input
+          type="checkbox"
+          id="privacyCheck"
+        >
+
+        <span>
+          J'ai lu et j'accepte la
+          Politique de confidentialité.
+        </span>
+
+      </label>
+
+      <button
+        class="primary"
+        id="continuePrivacy"
+        disabled
+        style="width:100%"
+      >
+        Continuer
+      </button>
+
+      <button
+        class="secondary"
+        onclick="showPage('privacy');document.getElementById('privacyFirstVisit').remove();"
+        style="width:100%;margin-top:10px"
+      >
+        Lire la politique
+      </button>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(overlay);
+
+
+  document
+    .getElementById("privacyCheck")
+    .addEventListener("change",function(){
+
+      document
+        .getElementById("continuePrivacy")
+        .disabled = !this.checked;
+
+    });
+
+
+  document
+    .getElementById("continuePrivacy")
+    .addEventListener("click",()=>{
+
+      account.privacyAccepted = true;
+
+      saveAccount();
+
+      overlay.remove();
+
+      if(!account.cookiesChoice){
+
+        document
+          .getElementById("cookieBanner")
+          .classList.remove("hidden");
+
+      }
+
+    });
+
+}
+
+
+function acceptCookies(){
+
+  account.cookiesChoice = "accepted";
+
+  saveAccount();
+
+  document
+    .getElementById("cookieBanner")
+    .classList.add("hidden");
+
+}
+
+
+function refuseCookies(){
+
+  account.cookiesChoice = "refused";
+
+  saveAccount();
+
+  document
+    .getElementById("cookieBanner")
+    .classList.add("hidden");
+
+}
+
+
+function customizeCookies(){
+
+  alert(
+    "Stockage nécessaire : activé. Analyse optionnelle : désactivée."
+  );
+
+  account.cookiesChoice = "customized";
+
+  saveAccount();
+
+  document
+    .getElementById("cookieBanner")
+    .classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function formatDate(timestamp){
+
+  if(!timestamp){
+    return "Non défini";
+  }
+
+  return new Date(timestamp)
+    .toLocaleString("fr-FR",{
+      dateStyle:"short",
+      timeStyle:"short"
+    });
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+renderTools();
+renderShop();
+renderPlans();
+updateUI();
+initPrivacy();
+
+</script>
+
+</body>
+</html>
