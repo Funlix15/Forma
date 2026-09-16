@@ -20,7 +20,9 @@
   --shadow:0 14px 40px rgba(30,35,80,.08);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -29,7 +31,10 @@ body{
   color:var(--text);
 }
 
-button,input,textarea,select{
+button,
+input,
+textarea,
+select{
   font:inherit;
 }
 
@@ -628,7 +633,6 @@ textarea.field{
 
 <main>
 
-<!-- ACCUEIL -->
 <section id="page-home" class="page active">
 
   <div class="hero">
@@ -716,7 +720,6 @@ textarea.field{
 </section>
 
 
-<!-- OUTILS -->
 <section id="page-tools" class="page">
 
   <h2>Les outils Forma</h2>
@@ -730,7 +733,6 @@ textarea.field{
 </section>
 
 
-<!-- GENERATEUR -->
 <section id="page-generator" class="page">
 
   <div id="generatorContainer"></div>
@@ -738,7 +740,6 @@ textarea.field{
 </section>
 
 
-<!-- BOUTIQUE -->
 <section id="page-shop" class="page">
 
   <h2>Boutique</h2>
@@ -748,7 +749,7 @@ textarea.field{
   </p>
 
   <div class="notice">
-    Mode démo — les achats de Coins sont actuellement gratuits.
+    Paiement sécurisé par Stripe. Après le paiement, tes Coins sont ajoutés automatiquement à ton compte.
   </div>
 
   <div id="shopGrid" class="grid"></div>
@@ -756,7 +757,6 @@ textarea.field{
 </section>
 
 
-<!-- ABONNEMENTS -->
 <section id="page-plans" class="page">
 
   <h2>Abonnement</h2>
@@ -770,7 +770,6 @@ textarea.field{
 </section>
 
 
-<!-- COMPTE -->
 <section id="page-account" class="page">
 
   <h2>Mon compte</h2>
@@ -822,7 +821,6 @@ textarea.field{
 </section>
 
 
-<!-- CONFIDENTIALITE -->
 <section id="page-privacy" class="page">
 
   <h2>Politique de confidentialité</h2>
@@ -846,7 +844,7 @@ textarea.field{
     <h3>Compte</h3>
 
     <p>
-      Dans cette version de démonstration, les informations du compte,
+      Dans cette version, les informations du compte,
       les Coins, les préférences et l'historique sont conservés localement
       dans le navigateur.
     </p>
@@ -871,7 +869,6 @@ textarea.field{
 </main>
 
 
-<!-- MODAL ZERO COINS -->
 <div id="coinModal" class="modal-bg">
 
   <div class="modal">
@@ -905,7 +902,6 @@ textarea.field{
 </div>
 
 
-<!-- MODAL FEEDBACK -->
 <div id="feedbackModal" class="modal-bg">
 
   <div class="modal">
@@ -928,7 +924,6 @@ textarea.field{
 </div>
 
 
-<!-- COOKIES -->
 <div id="cookieBanner" class="cookie hidden">
 
   <strong>Bienvenue sur Forma</strong>
@@ -986,7 +981,8 @@ const defaultAccount = {
   privacyAccepted: false,
   cookiesChoice: null,
   stripeCustomerId: null,
-  lastStripeSessionId: null
+  lastStripeSessionId: null,
+  processedCoinSessionIds: []
 };
 
 let account = loadAccount();
@@ -999,7 +995,7 @@ let generationResult = null;
 
 
 /* =========================================================
-   COMPTE — CHARGEMENT
+   CHARGEMENT COMPTE
 ========================================================= */
 
 function loadAccount(){
@@ -1016,18 +1012,28 @@ function loadAccount(){
       return {
         ...defaultAccount,
         ...saved,
+
         dailyCoins:
           Number(saved.dailyCoins ?? 1),
+
         purchasedCoins:
           Number(saved.purchasedCoins ?? 0),
+
         history:
           Array.isArray(saved.history)
             ? saved.history
             : [],
+
         feedback:
           Array.isArray(saved.feedback)
             ? saved.feedback
+            : [],
+
+        processedCoinSessionIds:
+          Array.isArray(saved.processedCoinSessionIds)
+            ? saved.processedCoinSessionIds
             : []
+
       };
 
     }
@@ -1193,6 +1199,7 @@ function checkRecharge(){
 
 }
 
+
 setInterval(
   checkRecharge,
   30000
@@ -1210,7 +1217,9 @@ function showPage(name){
   document
     .querySelectorAll(".page")
     .forEach(page => {
+
       page.classList.remove("active");
+
     });
 
 
@@ -1771,7 +1780,7 @@ const TOOLS = {
 
 
 /* =========================================================
-   AFFICHAGE DES OUTILS
+   AFFICHAGE OUTILS
 ========================================================= */
 
 function renderTools(){
@@ -2270,7 +2279,9 @@ function nextQuestion(){
 function previousQuestion(){
 
   if(currentQuestionIndex <= 0){
+
     showPage("tools");
+
     return;
   }
 
@@ -2484,7 +2495,7 @@ async function generateResult(){
 
           <button
             class="primary"
-            onclick="startGenerator('${currentTool.id}')"
+            onclick="startGenerator('${escapeHTML(currentTool.id)}')"
           >
             Réessayer
           </button>
@@ -2541,6 +2552,16 @@ function addPurchasedCoins(amount){
 
   amount =
     Number(amount);
+
+
+  if(
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ){
+
+    return;
+
+  }
 
 
   account.purchasedCoins +=
@@ -2743,13 +2764,16 @@ function resultToText(result){
         "\nConseils :"
       );
 
+
       result.tips.forEach(
         tip => {
 
           if(tip){
+
             lines.push(
               "• " + tip
             );
+
           }
 
         }
@@ -2847,7 +2871,7 @@ function modifyResult(){
 
 
 /* =========================================================
-   BOUTIQUE
+   BOUTIQUE COINS
 ========================================================= */
 
 const SHOP_PACKS = [
@@ -2924,30 +2948,31 @@ function renderShop(){
           ${pack.price}
         </div>
 
-        <button class="primary">
+        <button
+          class="primary"
+          type="button"
+        >
           Acheter
         </button>
 
       `;
 
 
-      card
-        .querySelector("button")
-        .addEventListener(
+      const button =
+        card.querySelector("button");
+
+
+      if(button){
+
+        button.addEventListener(
           "click",
-          () => {
-
-            addPurchasedCoins(
-              pack.coins
-            );
-
-
-            alert(
-              `Mode démo : ${pack.coins} Coins ajoutés à ton compte.`
-            );
-
-          }
+          () => startCoinStripeCheckout(
+            pack.coins,
+            button
+          )
         );
+
+      }
 
 
       container.appendChild(
@@ -2956,6 +2981,101 @@ function renderShop(){
 
     }
   );
+
+}
+
+
+/* =========================================================
+   STRIPE — ACHAT COINS
+========================================================= */
+
+async function startCoinStripeCheckout(
+  coins,
+  button
+){
+
+  try{
+
+    if(
+      !Number.isFinite(Number(coins)) ||
+      Number(coins) <= 0
+    ){
+
+      throw new Error(
+        "Pack de Coins invalide."
+      );
+
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+      "Chargement...";
+
+
+    const response =
+      await fetch(
+        "/api/create-coin-checkout-session",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            coins:Number(coins),
+            accountId:account.id
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      !data.url
+    ){
+
+      throw new Error(
+        data.error ||
+        "Impossible de créer le paiement."
+      );
+
+    }
+
+
+    window.location.href =
+      data.url;
+
+
+  }catch(error){
+
+    console.error(
+      "Erreur paiement Coins :",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Une erreur est survenue pendant le paiement."
+    );
+
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      "Acheter";
+
+  }
 
 }
 
@@ -3169,7 +3289,7 @@ function renderPlans(){
 
 
 /* =========================================================
-   STRIPE CHECKOUT
+   STRIPE CHECKOUT ABONNEMENT
 ========================================================= */
 
 async function startStripeCheckout(
@@ -3315,7 +3435,7 @@ function activatePlan(plan){
 
 
 /* =========================================================
-   RETOUR STRIPE
+   RETOUR STRIPE — ABONNEMENT
 ========================================================= */
 
 async function handleStripeReturn(){
@@ -3484,6 +3604,208 @@ async function handleStripeReturn(){
     alert(
       error.message ||
       "Impossible de confirmer ton paiement."
+    );
+
+  }
+
+
+  window.history.replaceState(
+    {},
+    document.title,
+    window.location.pathname
+  );
+
+}
+
+
+/* =========================================================
+   RETOUR STRIPE — COINS
+========================================================= */
+
+async function handleCoinStripeReturn(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const coinPayment =
+    params.get("coin_payment");
+
+
+  if(coinPayment === "cancelled"){
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    alert(
+      "Achat de Coins annulé."
+    );
+
+
+    return;
+
+  }
+
+
+  if(coinPayment !== "success"){
+    return;
+  }
+
+
+  const sessionId =
+    params.get("session_id");
+
+
+  if(!sessionId){
+
+    alert(
+      "Paiement effectué, mais la session Stripe est introuvable."
+    );
+
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    return;
+
+  }
+
+
+  account.processedCoinSessionIds =
+    Array.isArray(
+      account.processedCoinSessionIds
+    )
+      ? account.processedCoinSessionIds
+      : [];
+
+
+  if(
+    account.processedCoinSessionIds.includes(
+      sessionId
+    )
+  ){
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    alert(
+      "Cet achat de Coins a déjà été ajouté à ton compte."
+    );
+
+
+    return;
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/verify-coin-checkout-session",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            sessionId:sessionId
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      !data.ok
+    ){
+
+      throw new Error(
+        data.error ||
+        "Le paiement n'a pas pu être vérifié."
+      );
+
+    }
+
+
+    const coins =
+      Number(data.coins);
+
+
+    if(
+      !Number.isFinite(coins) ||
+      coins <= 0
+    ){
+
+      throw new Error(
+        "Le nombre de Coins reçu est invalide."
+      );
+
+    }
+
+
+    addPurchasedCoins(
+      coins
+    );
+
+
+    account.processedCoinSessionIds.push(
+      sessionId
+    );
+
+
+    if(
+      account.processedCoinSessionIds.length > 50
+    ){
+
+      account.processedCoinSessionIds =
+        account.processedCoinSessionIds.slice(-50);
+
+    }
+
+
+    saveAccount();
+
+    renderShop();
+
+
+    alert(
+      `Paiement confirmé ! ${coins} Coins ont été ajoutés à ton compte.`
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erreur activation achat Coins :",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Impossible de confirmer l'achat des Coins."
     );
 
   }
@@ -4064,6 +4386,8 @@ updateUI();
 initPrivacy();
 
 handleStripeReturn();
+
+handleCoinStripeReturn();
 
 </script>
 
