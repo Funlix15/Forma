@@ -243,17 +243,19 @@ app.post(
         });
       }
 
-      const session =
-        await stripe.checkout.sessions.create(
-          {
-            mode: "subscription",
+     const session =
+  await stripe.checkout.sessions.create(
+    {
+      mode: "subscription",
 
-            line_items: [
-              {
-                price: priceId,
-                quantity: 1
-              }
-            ],
+      payment_method_types: ["card"],
+
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1
+        }
+      ],
 
             success_url:
               "https://forma-3j9w.onrender.com?payment=success&session_id={CHECKOUT_SESSION_ID}",
